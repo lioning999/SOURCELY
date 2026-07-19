@@ -41,12 +41,12 @@
   <section class="card" id="productCard">
 
     <div class="stamp" aria-hidden="true">
-      <span class="stamp-l1" data-i18n="stamp.l1">独家货源</span>
+      <span class="stamp-l1" data-i18n="stamp.l1">工厂货源</span>
       <span class="stamp-l2" data-i18n="stamp.l2">NO MATCH</span>
     </div>
 
     <!-- 产品 Header：主图全宽 → 标题 → 规格 → 价格 -->
-    <img class="prod-img" src="static/img/test.jpg" alt="商品图">
+    <img class="prod-img" src="static/img/test1.jpg" alt="商品图">
     <h2 class="prod-title" data-i18n="product.title">女士连体泳衣</h2>
     <div class="prod-specs" id="prodSpecs">
       <span class="spec-tag">材质: 涤纶</span>
@@ -55,6 +55,11 @@
     </div>
     <p class="prod-rmb"><span data-i18n="product.original">原价</span> ¥25 – ¥38</p>
     <p class="prod-price"><span data-price-usd="3.50" data-price-high="5.20">$3.50 – $5.20</span> <em data-i18n="product.unit">/ 件</em></p>
+
+    <div class="prod-verdict g" id="prodVerdict">
+      <span class="vi"></span>
+      <span data-i18n="verdict.product">产品可卖 — 支持 7 天无理由，动销稳定，起批门槛低</span>
+    </div>
 
     <div class="warn" data-i18n="warn">该供应商不直发海外个人买家。我们帮你完成 1688 下单、国内收货、验货、国际发货全流程。</div>
 
@@ -67,11 +72,6 @@
 
     <!-- Tab 1: 产品 -->
     <div class="panel active" id="tab-product">
-
-      <div class="verdict g">
-        <span class="vi"></span>
-        <span data-i18n="verdict.product">产品可卖 — 支持 7 天无理由，动销稳定，起批门槛低</span>
-      </div>
 
       <div class="row">
         <span class="row-tag g">OK</span>
@@ -110,16 +110,9 @@
       </div>
     </div>
 
-    <!-- Tab 2: 图片（两列网格 + 详情单列） -->
+    <!-- Tab 2: 图片（两列网格） -->
     <div class="panel" id="tab-images">
-      <div class="gallery-sec">
-        <p class="gallery-label" data-i18n="gallery.product">商品图</p>
-        <div class="gallery" id="productGallery"></div>
-      </div>
-      <div class="gallery-sec">
-        <p class="gallery-label" data-i18n="gallery.desc">详情描述</p>
-        <div class="gallery-desc" id="descGallery"></div>
-      </div>
+      <div class="gallery" id="productGallery"></div>
     </div>
 
     <!-- Tab 3: 工厂 -->
@@ -137,8 +130,10 @@
         <div class="row-body">
           <div class="row-label" data-i18n="row.verified.label">1688 认证商家</div>
           <div class="row-value" id="verifiedBadges">
-            <span class="badge badge-green">超级工厂</span>
-            <span class="badge badge-blue">第三方认证</span>
+            <div class="cert-list">
+              <div class="cert-item">✓ 超级工厂 — 1688 官方认证头部大厂，实力厂家</div>
+              <div class="cert-item">✓ 第三方认证 — 独立机构验厂通过</div>
+            </div>
           </div>
           <div class="row-explain" data-i18n="row.verified.desc">1688 官方认证齐全，可信度高。</div>
         </div>
@@ -186,6 +181,7 @@
 
       <div class="cs-row"><span data-i18n="cost.product">商品费（2 件）</span><span id="productCost" data-price-usd="10.40">$10.40</span></div>
       <div class="cs-row"><span data-i18n="cost.shipping">国际运费（按重量 / 体积）</span><span id="shipCost">$4 – $8</span></div>
+      <p class="cs-note" id="shipNote" data-i18n="cost.shippingNote">* 估算基于 0.3-1kg 小包裹。实际运费发货前确认，多退少补。</p>
       <div class="cs-row"><span data-i18n="cost.service">服务费 + 国内运费</span><span data-price-usd="10.50">$10.50</span></div>
       <div class="cs-row total"><span data-i18n="cost.total">样品到手预估</span><span id="totalCost">$22.90 – $26.90</span></div>
       <p class="cs-note" data-i18n="cost.note">* 国际运费按实际重量 / 体积计算，发货前确认最终价格。</p>
@@ -210,9 +206,20 @@
       <div class="sec" data-i18n="sec.process">服务流程</div>
       <div class="steps">
         <span data-i18n="process.step1">1. 1688 代下单</span><span class="sep">→</span>
-        <span data-i18n="process.step2">2. 收货验货拍照</span><span class="sep">→</span>
+        <span data-i18n="process.step2">2. 收货验货拍照</span><button class="info-btn" id="inspectToggle" aria-label="查看验货详情">?</button><span class="sep">→</span>
         <span data-i18n="process.step3">3. 照片发你确认</span><span class="sep">→</span>
         <span data-i18n="process.step4">4. 打包发国际物流</span>
+      </div>
+      <div class="steps-detail" id="inspectDetail" style="display:none">
+        <p class="steps-detail-title" data-i18n="process.inspectTitle">收到货后我们检查以下项目：</p>
+        <ul class="steps-detail-list">
+          <li data-i18n="process.inspect1">颜色是否与商品图一致</li>
+          <li data-i18n="process.inspect2">尺寸是否符合规格参数</li>
+          <li data-i18n="process.inspect3">外观是否有破损、瑕疵</li>
+          <li data-i18n="process.inspect4">数量是否正确</li>
+          <li data-i18n="process.inspect5">拍照 3-5 张发你 WhatsApp 确认</li>
+        </ul>
+        <p class="steps-detail-note" data-i18n="process.inspectNote">⚠️ 发现质量问题 → 通知你 → 你决定退款或换货 → 我们执行。服务费不退，但会全力帮你协调。</p>
       </div>
       <p style="font-size:var(--fs-xs);color:var(--ink-3);margin-top:8px;" data-i18n="process.fee">$10 服务费覆盖以上全部流程。</p>
 

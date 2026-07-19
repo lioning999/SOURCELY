@@ -165,7 +165,7 @@ function fillProductCard(data) {
   if (unitEl && data.unit) unitEl.textContent = '/ ' + data.unit;
 
   // === Tab Product (4 rows) ===
-  var pVerdict = document.querySelector('#tab-product .verdict span:last-child');
+  var pVerdict = document.querySelector('#prodVerdict span:last-child');
   if (pVerdict) {
     var ok_7d = data.return7day === 'OK', ok_sales = data.sales30d !== 'N/A';
     var ok_moq = data.moq != null && data.moq <= 10;
@@ -173,7 +173,7 @@ function fillProductCard(data) {
     pVerdict.textContent = allOk
       ? '产品可卖 — ' + [ok_7d?'支持7天无理由':'', ok_sales?'持续动销':'', ok_moq?'起批门槛低':''].filter(Boolean).join('，')
       : '产品需谨慎 — 部分指标不达标';
-    var vBar = document.querySelector('#tab-product .verdict');
+    var vBar = document.getElementById('prodVerdict');
     if (vBar) { vBar.classList.remove('g','y'); vBar.classList.add(allOk ? 'g' : 'y'); }
     pVerdict.removeAttribute('data-i18n');
   }
@@ -238,14 +238,6 @@ function fillProductCard(data) {
     });
     productGallery.innerHTML = galleryHtml;
   }
-  var descGallery = document.getElementById('descGallery');
-  if (descGallery && data.descriptionImages) {
-    var descHtml = '';
-    (data.descriptionImages || []).slice(0, 10).forEach(function(url) {
-      descHtml += '<img src="' + url + '" loading="lazy" alt="详情图">';
-    });
-    descGallery.innerHTML = descHtml;
-  }
 
   // === Tab Factory (4 rows) ===
   var fVerdict = document.querySelector('#tab-factory .verdict span:last-child');
@@ -267,20 +259,33 @@ function fillProductCard(data) {
     certEl.removeAttribute('data-i18n');
   }
 
-  // Row 0: 1688认证商家（badges）
+  // Row 0: 1688认证商家（cert-list）
+  var CERT_DESC = {
+    '超级工厂': '1688 官方认证头部大厂，年销售额超千万',
+    '诚信通': '1688 基础企业认证，经营 2 年以上',
+    'TP验厂': '第三方机构实地验厂通过',
+    '厂货通': '1688 工厂直供频道认证',
+    '实力工厂': '1688 认证的实力厂家',
+    '品牌认证': '品牌方授权认证',
+    '生产厂家': '企业工商注册为生产型',
+    '第三方认证': '独立第三方机构验厂通过',
+  };
   var vTagList = data.verifiedTags || [];
-  var badgesHtml = '';
+  var certHtml = '';
   if (data.verified === 'OK' && vTagList.length > 0) {
+    certHtml = '<div class="cert-list">';
     vTagList.forEach(function(t) {
-      badgesHtml += '<span class="badge badge-blue">' + t + '</span>';
+      var desc = CERT_DESC[t] || '';
+      certHtml += '<div class="cert-item">✓ <span class="cert-name">' + t + '</span>' + (desc ? ' <span class="cert-desc">— ' + desc + '</span>' : '') + '</div>';
     });
+    certHtml += '</div>';
   } else {
-    badgesHtml = '未认证';
+    certHtml = '<div class="cert-item" style="color:var(--ink-3);">⚠️ 仅基础认证</div>';
   }
-  var badgeEl = document.getElementById('verifiedBadges');
-  if (badgeEl) {
-    badgeEl.innerHTML = badgesHtml;
-    badgeEl.removeAttribute('data-i18n');
+  var certEl = document.getElementById('verifiedBadges');
+  if (certEl) {
+    certEl.innerHTML = certHtml;
+    certEl.removeAttribute('data-i18n');
   }
   setRowTag('tab-factory', 0, data.verified);
 
@@ -463,11 +468,25 @@ function bindCostInputs() {
   if (destSelect) destSelect.addEventListener('change', updateCost);
 }
 
+// ===== Inspect detail toggle =====
+function bindInspectToggle() {
+  var btn = document.getElementById('inspectToggle');
+  var detail = document.getElementById('inspectDetail');
+  if (!btn || !detail) return;
+  btn.addEventListener('click', function() {
+    var open = detail.style.display !== 'none';
+    detail.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('active', !open);
+    btn.textContent = open ? '?' : '×';
+  });
+}
+
 // ===== Bootstrap: i18n first, then bind UI =====
 I18N.init().then(function() {
   bindSubTabs();
   bindSearch();
   bindCostInputs();
   bindLangSwitcher();
+  bindInspectToggle();
   updateCost();
 });

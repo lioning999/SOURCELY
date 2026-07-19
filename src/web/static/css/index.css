@@ -171,11 +171,13 @@ body {
 
 /* ===== Product Header ===== */
 .prod-img {
-  width: 100%; max-height: 320px;
-  border-radius: var(--r-sm);
+  width: 300px; height: 300px; max-width: 100%;
+  margin: 0 auto;
+  border-radius: 12px;
   object-fit: contain;
-  background: #F5F5F5;
-  border: 1px solid var(--line-soft);
+  background: #FFF;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   display: block;
 }
 .prod-title { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; color: var(--ink); line-height: 1.35; letter-spacing: -.1px; margin-top: var(--s4); }
@@ -193,6 +195,25 @@ body {
 .prod-rmb   { font-size: var(--fs-xs); color: var(--ink-3); margin-top: var(--s1); font-family: var(--font-mono); }
 .prod-price { font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: var(--seal); margin-top: var(--s1); }
 .prod-price em { font-size: var(--fs-sm); font-weight: 400; color: var(--ink-3); font-style: normal; font-family: var(--font-body); }
+
+/* Product verdict — moved out of tab, sits above warn */
+.prod-verdict {
+  margin-top: var(--s4);
+  padding: var(--s3) var(--s4);
+  border-radius: var(--r-sm);
+  font-size: var(--fs); font-weight: 600;
+  line-height: 1.55;
+  display: flex; align-items: flex-start; gap: var(--s3);
+  border-left: 4px solid;
+}
+.prod-verdict.g { background: var(--ok-bg); color: #1F5C3F; border-left-color: var(--ok); }
+.prod-verdict.y { background: var(--warn-bg); color: #7A5A1E; border-left-color: var(--warn); }
+.prod-verdict .vi {
+  width: 8px; height: 8px; flex-shrink: 0; margin-top: 5px;
+  transform: rotate(45deg); border-radius: 2px;
+}
+.prod-verdict.g .vi { background: var(--ok); }
+.prod-verdict.y .vi { background: var(--warn); }
 
 .warn {
   font-size: var(--fs-sm); color: #7A5A1E;
@@ -229,7 +250,7 @@ body {
 }
 
 /* ===== Panel ===== */
-.panel { display: none !important; background: var(--paper); padding: var(--s5) var(--s4) var(--s4); border-radius: 0 0 var(--r-sm) var(--r-sm); margin: 0 -4px; }
+.panel { display: none !important; background: var(--paper); padding: var(--s5) var(--s4) var(--s4); border-radius: 0 0 var(--r-sm) var(--r-sm); border: 1px solid var(--line); border-top: none; }
 .panel.active { display: block !important; }
 
 /* ===== Verdict ===== */
@@ -330,6 +351,30 @@ body {
   padding: 5px 10px; border-radius: 6px; white-space: nowrap; font-weight: 500;
 }
 .steps .sep { color: var(--ink-3); background: none; padding: 0 1px; border: none; }
+
+/* Inspect toggle button */
+.info-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; margin-left: 4px;
+  border: 1px solid var(--ink-3); border-radius: 50%;
+  background: none; color: var(--ink-3);
+  font-size: 11px; font-weight: 700; font-family: var(--font-mono);
+  cursor: pointer; padding: 0; line-height: 1;
+  transition: all .15s;
+  position: relative; top: -1px;
+}
+.info-btn:hover, .info-btn.active { background: var(--brand); color: #FFF; border-color: var(--brand); }
+
+/* Steps detail (expandable) */
+.steps-detail {
+  margin-top: var(--s3); padding: var(--s3) var(--s4);
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+}
+.steps-detail-title { font-size: var(--fs-sm); font-weight: 700; color: var(--ink); margin-bottom: var(--s2); }
+.steps-detail-list { margin: 0; padding: 0 0 0 var(--s4); font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.8; }
+.steps-detail-list li { margin-bottom: 2px; }
+.steps-detail-note { font-size: var(--fs-xs); color: var(--warn); font-weight: 600; margin-top: var(--s2); line-height: 1.6; }
 
 /* ===== CTA ===== */
 .btn {
@@ -505,6 +550,15 @@ body {
 .badge-factory { background: #D4F5E2; color: #1A6B3C; border: 1px solid #1A6B3C; font-size: 12px; padding: 5px 14px; }
 .badge-yellow { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn); }
 
+/* ===== Factory cert list ===== */
+.cert-list { display: flex; flex-direction: column; gap: 6px; }
+.cert-item {
+  font-size: var(--fs-sm); font-weight: 600; color: var(--ink);
+  line-height: 1.5; padding: 2px 0;
+}
+.cert-item .cert-name { color: var(--brand); }
+.cert-item .cert-desc { color: var(--ink-3); font-weight: 400; font-size: var(--fs-xs); margin-left: 2px; }
+
 /* ===== Image Gallery ===== */
 .gallery-sec { margin-bottom: var(--s5); }
 .gallery-label {
@@ -534,7 +588,6 @@ body {
 
 @media (min-width: 500px) {
   .view { max-width: 500px; }
-  .prod-img { max-height: 380px; }
   .prod-title { font-size: var(--fs-xl); }
 }
 
