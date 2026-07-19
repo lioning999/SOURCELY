@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>支付宝支付 — 源采 Sourcely</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700;900&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" style="text-decoration:none;">
+    <div class="brand">
+      <span class="brand-cn">源采</span>
+      <span class="brand-en">SOURCELY</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link" data-i18n="nav.analyze">分析</a>
+    <a href="checkout.html" class="nav-link" data-i18n="nav.order">下单</a>
+    <a href="admin.html" class="nav-link" data-i18n="nav.admin">后台</a>
+  </div>
+  <select id="langSwitcher" class="lang-sw" aria-label="Language">
+    <option value="zh">中文</option>
+    <option value="en">English</option>
+    <option value="vi">Tiếng Việt</option>
+  </select>
+</nav>
+
+<main class="view active" style="display:block;">
+
+  <!-- Payment Card -->
+  <section class="card" style="margin-bottom:var(--s4);">
+
+    <div style="text-align:center;margin-bottom:var(--s6);">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:#1677FF;color:#fff;padding:6px 16px;border-radius:20px;font-size:var(--fs-xs);font-weight:700;font-family:var(--font-mono);letter-spacing:.5px;">
+        <span style="font-size:18px;">支</span> 支付宝
+      </div>
+      <h2 style="font-family:var(--font-display);font-size:var(--fs-xl);font-weight:700;margin-top:var(--s4);" data-i18n="alipay.title">支付宝支付</h2>
+    </div>
+
+    <!-- Order summary -->
+    <div style="background:var(--paper);border-radius:var(--r);padding:var(--s4);margin-bottom:var(--s5);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s3);">
+        <span style="font-size:var(--fs-sm);color:var(--ink-2);" data-i18n="alipay.order">订单号 #SAMPLE-001</span>
+        <span style="font-size:var(--fs-xs);color:var(--ink-3);font-family:var(--font-mono);">女士连体泳衣 ×2</span>
+      </div>
+      <div class="cs-row"><span data-i18n="alipay.amount">支付金额</span><span id="alipayAmount" data-price-usd="13.45">$13.45</span></div>
+      <div style="text-align:right;font-size:var(--fs-xs);color:var(--ink-3);margin-top:2px;" data-i18n="currency.ref">≈ $13.45 USD · 参考汇率 · 以美元结算</div>
+    </div>
+
+    <!-- QR Code payment -->
+    <div style="text-align:center;margin-bottom:var(--s4);">
+      <div class="qr-box" id="qrBox">
+        <!-- Simulated QR code pattern -->
+        <div class="qr-code" aria-hidden="true">
+          <svg viewBox="0 0 160 160" width="160" height="160">
+            <!-- QR-like pattern purely decorative -->
+            <rect x="8" y="8" width="56" height="56" rx="4" fill="#1677FF" opacity=".12"/>
+            <rect x="12" y="12" width="48" height="48" rx="3" fill="#1677FF" opacity=".2"/>
+            <rect x="16" y="16" width="40" height="40" rx="2" fill="none" stroke="#1677FF" stroke-width="1.5" opacity=".4"/>
+            <rect x="24" y="24" width="10" height="10" rx="1" fill="#1677FF"/>
+            <rect x="38" y="24" width="10" height="10" rx="1" fill="#1677FF"/>
+            <rect x="24" y="38" width="10" height="10" rx="1" fill="#1677FF"/>
+            <rect x="38" y="38" width="10" height="10" rx="1" fill="#1677FF"/>
+
+            <rect x="96" y="8" width="56" height="56" rx="4" fill="#1677FF" opacity=".12"/>
+            <rect x="100" y="12" width="48" height="48" rx="3" fill="#1677FF" opacity=".2"/>
+            <rect x="104" y="16" width="40" height="40" rx="2" fill="none" stroke="#1677FF" stroke-width="1.5" opacity=".4"/>
+            <rect x="112" y="24" width="10" height="10" rx="1" fill="#1677FF"/>
+            <rect x="126" y="24" width="10" height="10" rx="1" fill="#1677FF"/>
+            <rect x="112" y="38" width="10" height="10" rx="1" fill="#1677FF"/>
+            <rect x="126" y="38" width="10" height="10" rx="1" fill="#1677FF"/>
+
+            <rect x="8" y="96" width="56" height="56" rx="4" fill="#1677FF" opacity=".12"/>
+            <rect x="12" y="100" width="48" height="48" rx="3" fill="#1677FF" opacity=".2"/>
+            <rect x="16" y="104" width="40" height="40" rx="2" fill="none" stroke="#1677FF" stroke-width="1.5" opacity=".4"/>
+            <rect x="24" y="112" width="10" height="10" rx="1" fill="#1677FF"/>
+            <rect x="38" y="112" width="10" height="10" rx="1" fill="#1677FF"/>
+            <rect x="24" y="126" width="10" height="10" rx="1" fill="#1677FF"/>
+            <rect x="38" y="126" width="10" height="10" rx="1" fill="#1677FF"/>
+
+            <!-- Center logo area -->
+            <rect x="62" y="62" width="36" height="36" rx="6" fill="#1677FF" opacity=".15"/>
+            <text x="80" y="86" text-anchor="middle" font-size="18" font-weight="900" fill="#1677FF" font-family="serif">支</text>
+          </svg>
+        </div>
+        <p style="font-size:var(--fs-sm);color:var(--ink);font-weight:600;margin-top:var(--s3);" data-i18n="alipay.scan">使用支付宝扫码支付</p>
+        <p style="font-size:var(--fs-xs);color:var(--ink-3);margin-top:var(--s1);" data-i18n="alipay.scanHint">打开支付宝 App → 扫一扫 → 确认付款</p>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div style="display:flex;align-items:center;gap:var(--s3);margin:var(--s4) 0;">
+      <span style="flex:1;height:1px;background:var(--line);"></span>
+      <span style="font-size:var(--fs-xs);color:var(--ink-3);font-family:var(--font-mono);" data-i18n="alipay.or">或</span>
+      <span style="flex:1;height:1px;background:var(--line);"></span>
+    </div>
+
+    <!-- Card payment toggle -->
+    <div style="text-align:center;">
+      <button class="tab active" id="cardToggle" style="display:inline-flex;align-items:center;gap:6px;width:auto;flex:none;padding:8px 16px;border-radius:var(--r);font-size:var(--fs);top:0;" data-i18n="alipay.card">
+        <span>💳</span> 银行卡支付
+      </button>
+    </div>
+
+    <!-- Card form (hidden by default) -->
+    <div id="cardForm" style="display:none;margin-top:var(--s4);">
+      <div class="form-grid">
+        <div class="ff full"><label data-i18n="alipay.cardNumber">卡号</label><input type="text" placeholder="0000 0000 0000 0000"></div>
+        <div class="ff"><label data-i18n="alipay.expiry">有效期</label><input type="text" placeholder="MM/YY"></div>
+        <div class="ff"><label data-i18n="alipay.cvv">CVV</label><input type="text" placeholder="***"></div>
+        <div class="ff full"><label data-i18n="alipay.cardName">持卡人姓名</label><input type="text" placeholder="ZHANG SAN"></div>
+      </div>
+    </div>
+
+    <!-- Pay button -->
+    <button class="btn alipay-btn" id="payConfirmBtn" style="margin-top:var(--s5);background:#1677FF;border-color:#1677FF;box-shadow:0 6px 16px rgba(22,119,255,.3);" data-i18n="alipay.pay">
+      确认支付
+    </button>
+    <p style="text-align:center;font-size:var(--fs-xs);color:var(--ink-3);margin-top:var(--s2);">🔒 支付由支付宝安全处理</p>
+
+    <!-- WhatsApp -->
+    <div class="wa" style="margin-top:var(--s5);">
+      <span data-i18n="wa.question">有问题？</span>
+      <a href="#" data-i18n="wa.link">WhatsApp：+86 138-xxxx-xxxx</a>
+    </div>
+
+  </section>
+
+  <!-- Success state (hidden until payment) -->
+  <section class="card" id="successCard" style="display:none;text-align:center;">
+    <div style="font-size:56px;margin-bottom:var(--s4);">✅</div>
+    <h2 style="font-family:var(--font-display);font-size:var(--fs-xl);font-weight:700;margin-bottom:var(--s2);" data-i18n="alipay.success">支付成功！</h2>
+    <p style="font-size:var(--fs);color:var(--ink-2);margin-bottom:var(--s2);line-height:1.6;" data-i18n="alipay.successMsg">
+      已收到你的付款，我们将开始处理你的订单。
+    </p>
+    <div class="flow-wrap" style="margin:var(--s5) 0;">
+      <span class="flow-step done">1. 定金已付</span>
+      <span class="flow-sep">···</span>
+      <span class="flow-step current">2. 验货拍照</span>
+      <span class="flow-sep">···</span>
+      <span class="flow-step">3. 已发货</span>
+    </div>
+    <a href="checkout.html" class="btn" style="text-decoration:none;display:block;background:var(--ok);border-color:var(--ok);box-shadow:0 6px 16px rgba(47,138,91,.25);" data-i18n="alipay.back">
+      返回订单页
+    </a>
+  </section>
+
+</main>
+
+<script src="static/js/i18n.js"></script>
+<script src="static/js/pages/alipay.js"></script>
+</body>
+</html>

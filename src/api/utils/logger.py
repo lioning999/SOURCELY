@@ -1,0 +1,75 @@
+"""日志工具 — 文件轮转 + 控制台双输出，支持脱敏配置。"""
+
+import logging
+import sys
+from logging.handlers import RotatingFileHandler
+from pathlib import Path
+
+
+def get_logger(
+    name: str,
+    log_dir: str = "logs",
+    level: int = logging.INFO,
+    max_bytes: int = 10 * 1024 * 1024,
+    backup_count: int = 5,
+) -> logging.Logger:
+    """获取配置好的 logger 实例。
+
+    Args:
+        name: logger 名称，通常传 __name__
+        log_dir: 日志目录（相对或绝对路径）
+        level: 日志级别
+        max_bytes: 单个日志文件上限
+        backup_count: 保留的轮转文件数
+
+    Returns:
+        配置好的 Logger 实例
+    """
+    logger = logging.getLogger(name)
+
+    if logger.handlers:
+        return logger  # 避免重复添加 handler
+
+    logger.setLevel(level)
+    logger.propagate = False
+
+    formatter = logging.Formatter(
+        "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+
+    # 控制台输出
+    console = logging.StreamHandler(sys.stdout)
+    console.setFormatter(formatter)
+    logger.addHandler(console)
+
+    # 文件轮转
+    log_path = Path(log_dir)
+    log_path.mkdir(parents=True, exist_ok=True)
+    file_handler = RotatingFileHandler(
+        log_path / f"{name.split('.')[-1] or 'app'}.log",
+        maxBytes=max_bytes,
+        backupCount=backup_count,
+        encoding="utf-8",
+    )
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
+    return logger
+
+
+def mask_sensitive(value: str, visible_chars: int = 4) -> str:
+    """脱敏处理。保留前N位，其余替换为***。
+
+    Args:
+        value: 原始值（如 openid、token）
+        visible_chars: 前面保留的字符数
+
+    Returns:
+        脱敏后的字符串
+    """
+    if not value:
+        return ""
+    if len(value) <= visible_chars:
+        return value[:visible_chars] + "***"
+    return value[:visible_chars] + "***"

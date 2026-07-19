@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>样品下单 — 源采 Sourcely</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700;900&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" style="text-decoration:none;">
+    <div class="brand">
+      <span class="brand-cn">源采</span>
+      <span class="brand-en">SOURCELY</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">分析</a>
+    <a href="checkout.html" class="nav-link active">下单</a>
+    <a href="admin.html" class="nav-link">后台</a>
+  </div>
+</nav>
+
+<main class="view active" style="display:block;">
+
+  <section class="co-card">
+    <h2 class="co-title">样品下单</h2>
+
+    <div>
+      <h3 class="sub-label">订单摘要</h3>
+      <div class="co-item">
+        <img src="https://placehold.co/80x80/F7F5F0/1E3A5F?text=Swimsuit" alt="">
+        <div>
+          <strong>女士连体泳衣 显瘦遮肚 度假温泉款</strong>
+          <p>数量：2 件</p>
+        </div>
+      </div>
+      <div style="margin-top:var(--s3);">
+        <div class="cs-row"><span>预估总价</span><span>$22.90 – $26.90</span></div>
+        <div class="cs-row total"><span>本次需付定金（50%）</span><span id="coDeposit">$13.45</span></div>
+        <p style="font-size:var(--fs-xs);color:var(--ink-2);margin-top:6px;">尾款待验货照片确认后支付</p>
+      </div>
+    </div>
+
+    <div style="margin-top:var(--s6);">
+      <h3 class="sub-label">收货信息</h3>
+      <div class="form-grid">
+        <div class="ff"><label>姓名 *</label><input type="text" placeholder="张三"></div>
+        <div class="ff"><label>电话（含国家代码）*</label><input type="text" placeholder="+66 812345678"></div>
+        <div class="ff"><label>邮箱 *</label><input type="email" placeholder="zhangsan@email.com"></div>
+        <div class="ff"><label>WhatsApp（选填）</label><input type="text" placeholder="+66 812345678"></div>
+        <div class="ff full"><label>收货地址 *</label><textarea placeholder="详细街道、门牌号、城市、省份、邮编、国家"></textarea></div>
+        <div class="ff full"><label>特殊要求（选填）</label><textarea placeholder="如：确认面料弹性、缝线是否牢固、颜色是否纯黑不偏蓝"></textarea></div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:var(--s6);">
+      <button class="btn" id="payBtn" style="margin-top:0;">支付 $13.45 定金</button>
+      <p class="pay-opt"><span>银行卡</span><span>·</span><span>PayPal</span></p>
+    </div>
+
+    <div class="wa" style="margin-top:var(--s5);">
+      <span>下单遇到问题？</span><a href="#">WhatsApp：+86 138-xxxx-xxxx</a>
+    </div>
+
+    <div class="modal" id="successModal">
+      <div class="modal-card">
+        <div class="modal-icon">✓</div>
+        <h2>订单已收到</h2>
+        <p>我们将在 <strong>48 小时内</strong> 去 1688 下单采购你的样品，收货后拍照发你确认。</p>
+        <p>你确认照片 → 付尾款 → 我们发货。</p>
+        <div class="flow-wrap" style="margin:var(--s5) 0;">
+          <span class="flow-step done">1. 定金已付</span>
+          <span class="flow-sep">···</span>
+          <span class="flow-step current">2. 验货拍照</span>
+          <span class="flow-sep">···</span>
+          <span class="flow-step">3. 已发货</span>
+        </div>
+        <p style="font-size:var(--fs-sm);color:var(--ink-2);font-family:var(--font-mono);">WhatsApp：+86 138-xxxx-xxxx</p>
+        <a href="index.html" class="btn" style="text-decoration:none;display:block;margin-top:var(--s3);">返回首页</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+// Payment modal
+var payBtn = document.getElementById('payBtn');
+var successModal = document.getElementById('successModal');
+
+payBtn.addEventListener('click', function() {
+  payBtn.textContent = '处理中...';
+  payBtn.disabled = true;
+  setTimeout(function() {
+    payBtn.textContent = '支付 $13.45 定金';
+    payBtn.disabled = false;
+    successModal.classList.add('show');
+  }, 1500);
+});
+
+successModal.addEventListener('click', function(e) {
+  if (e.target === successModal) successModal.classList.remove('show');
+});
+</script>
+</body>
+</html>

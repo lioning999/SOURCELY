@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>源采 Sourcely — 1688 样品代采</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700;900&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" style="text-decoration:none;">
+    <div class="brand">
+      <span class="brand-cn">源采</span>
+      <span class="brand-en">SOURCELY</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link active">分析</a>
+    <a href="checkout.html" class="nav-link">下单</a>
+    <a href="admin.html" class="nav-link">后台</a>
+  </div>
+</nav>
+
+<main class="view active" style="display:block;">
+
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="粘贴 1688 商品链接...">
+    <button id="searchBtn">分析</button>
+  </div>
+  <p class="search-hint">每日免费 3 次 · WHATSAPP 登记后不限次数</p>
+
+  <section class="card" id="productCard">
+
+    <div class="stamp" aria-hidden="true">
+      <span class="stamp-l1">独家货源</span>
+      <span class="stamp-l2">NO MATCH</span>
+    </div>
+
+    <div class="prod">
+      <img class="prod-img" src="static/img/test.jpg" alt="商品图">
+      <div>
+        <h2 class="prod-title">女士连体泳衣<br>显瘦遮肚 · 度假温泉款</h2>
+        <p class="prod-price">$3.50 – $5.20 <em>/ 件</em></p>
+        <p class="prod-rmb">≈ ¥25 – ¥38 人民币</p>
+      </div>
+    </div>
+
+    <div class="warn">该供应商不直发海外个人买家。我们帮你完成 1688 下单、国内收货、验货、国际发货全流程。</div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="product">产品</button>
+      <button class="tab" data-tab="factory">工厂</button>
+      <button class="tab" data-tab="sample">拿样</button>
+    </div>
+
+    <!-- Tab 1: 产品 -->
+    <div class="panel active" id="tab-product">
+
+      <div class="verdict g">
+        <span class="vi"></span>
+        <span>产品可卖 — 好评率 99.7%，支持 7 天无理由，2 件起批门槛低</span>
+      </div>
+
+      <div class="row">
+        <span class="row-tag g">OK</span>
+        <div class="row-body">
+          <div class="row-label">7 天无理由退货</div>
+          <div class="row-value">支持</div>
+          <div class="row-explain">工厂对品质有信心才敢承诺。万一质量问题可退，降低试错成本。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="row-tag g">OK</span>
+        <div class="row-body">
+          <div class="row-label">好评率</div>
+          <div class="row-value">99.7%</div>
+          <div class="row-explain">1688 上 ≥99% 属优质水平，无集中品质投诉。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="row-tag g">OK</span>
+        <div class="row-body">
+          <div class="row-label">近 30 天成交</div>
+          <div class="row-value">156 笔 · ¥6,240</div>
+          <div class="row-explain">持续动销，月均 156 笔，市场验证通过。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="row-tag g">OK</span>
+        <div class="row-body">
+          <div class="row-label">起批条件</div>
+          <div class="row-value">2 件起批</div>
+          <div class="row-explain">门槛极低，可低成本测款。<a href="https://detail.1688.com/offer/xxxx.html" target="_blank">查看 1688 原页面 →</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: 工厂 -->
+    <div class="panel" id="tab-factory">
+
+      <div class="verdict y">
+        <span class="vi"></span>
+        <span>工厂靠谱但发货慢 — 6 年真工厂，回头率 47%，但发货低于同行</span>
+      </div>
+
+      <div class="sec">工厂认证 · 兴城市达洛优制衣有限公司</div>
+
+      <div class="row">
+        <span class="row-tag g">OK</span>
+        <div class="row-body">
+          <div class="row-label">1688 认证商家</div>
+          <div class="row-value">已认证</div>
+          <div class="row-explain">1688 官方认证，已缴纳保证金。比普通商家更可靠。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="row-tag g">OK</span>
+        <div class="row-body">
+          <div class="row-label">开店时长</div>
+          <div class="row-value">6 年</div>
+          <div class="row-explain">在 1688 经营 6 年，时间越久越可靠，短期跑路风险低。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="row-tag g">OK</span>
+        <div class="row-body">
+          <div class="row-label">经营模式</div>
+          <div class="row-value">生产厂家</div>
+          <div class="row-explain">真工厂。兴城是中国泳装产业带，工厂直营可信度高。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="row-tag r">NO</span>
+        <div class="row-body">
+          <div class="row-label">实地验厂</div>
+          <div class="row-value">无</div>
+          <div class="row-explain">未经过第三方机构（如 SGS）实地审核。不代表工厂不存在，只代表未付费做认证。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="row-tag r">NO</span>
+        <div class="row-body">
+          <div class="row-label">跨境专供</div>
+          <div class="row-value">无</div>
+          <div class="row-explain">无海外订单记录。包装和发货流程可能不熟悉国际运输需求。</div>
+        </div>
+      </div>
+
+      <div class="sec">交易表现</div>
+
+      <div class="row">
+        <span class="row-tag g">OK</span>
+        <div class="row-body">
+          <div class="row-label">回头率</div>
+          <div class="row-value">47%</div>
+          <div class="row-explain">高于 30% 合格线，近半客户复购。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="row-tag r">NO</span>
+        <div class="row-body">
+          <div class="row-label">发货速度</div>
+          <div class="row-value">低于同行</div>
+          <div class="row-explain">1688 显示发货速度低于同行均值，下单时需锁定交期，预留缓冲时间。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="row-tag g">OK</span>
+        <div class="row-body">
+          <div class="row-label">货描相符</div>
+          <div class="row-value">4.6 / 5.0</div>
+          <div class="row-explain">实物与描述一致度评分。≥4.5 属安全区间，品控靠谱。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: 拿样 -->
+    <div class="panel" id="tab-sample">
+
+      <div class="verdict g">
+        <span class="vi"></span>
+        <span>样品到手 $22.90 – $26.90，付 $13.45 定金即可。验货确认后再付尾款。</span>
+      </div>
+
+      <div class="sec">费用明细</div>
+
+      <div class="cs-row"><span>商品费（2 件）</span><span id="productCost">$10.40</span></div>
+      <div class="cs-row"><span>国际运费（按重量 / 体积）</span><span id="shipCost">$4 – $8</span></div>
+      <div class="cs-row"><span>服务费 + 国内运费</span><span>$10.50</span></div>
+      <div class="cs-row total"><span>样品到手预估</span><span id="totalCost">$22.90 – $26.90</span></div>
+      <p class="cs-note">* 国际运费按实际重量 / 体积计算，发货前确认最终价格。</p>
+
+      <div class="cf" style="margin-top:16px;">
+        <div class="cf-field">
+          <label>数量</label>
+          <input type="number" id="qty" value="2" min="2" max="50">
+        </div>
+        <div class="cf-field">
+          <label>目的国</label>
+          <select id="dest">
+            <option value="TH">泰国</option>
+            <option value="VN">越南</option>
+            <option value="ID">印尼</option>
+            <option value="MY">马来西亚</option>
+            <option value="PH">菲律宾</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sec">服务流程</div>
+      <div class="steps">
+        <span>1. 1688 代下单</span><span class="sep">→</span>
+        <span>2. 收货验货拍照</span><span class="sep">→</span>
+        <span>3. 照片发你确认</span><span class="sep">→</span>
+        <span>4. 打包发国际物流</span>
+      </div>
+      <p style="font-size:var(--fs-xs);color:var(--ink-3);margin-top:8px;">$10 服务费覆盖以上全部流程。</p>
+
+      <a href="checkout.html" class="btn" style="text-decoration:none;display:block;" id="orderLink">拿样品 · 付 $13.45 定金</a>
+      <p class="btn-sub">我们去 1688 下单 → 收货验货拍照 → 你确认 → 付尾款 → 国际发货到你门口</p>
+      <p class="btn-deposit">仅需付 50% 定金，验货确认后再付尾款</p>
+
+      <div class="wa">
+        <span>有问题？</span>
+        <a href="#">WhatsApp：+86 138-xxxx-xxxx</a>
+      </div>
+
+      <div class="quote">
+        <span>★★★★★</span>
+        <span>"已通过平台采购 3 次，验货照片很详细，发货准时。"</span>
+        <strong>— Linh Nguyen</strong>
+        <muted>胡志明市 · Shopee 卖家</muted>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<script src="static/js/pages/index.js"></script>
+</body>
+</html>
