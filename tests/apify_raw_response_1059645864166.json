@@ -1,0 +1,269 @@
+{
+  "offerId": "1059645864166",
+  "supplier": {
+    "memberId": "b2b-2208766259761e81f7",
+    "flags": {
+      "isChtMember": false,
+      "isIndustrySeller": false,
+      "isEaseBuyDealer": false,
+      "isFactoryDealer": false,
+      "isSuperFactory": false,
+      "isTpFactory": false,
+      "isShiliFactory": false,
+      "isSiliCertifiedBrand": false,
+      "isFactory": true,
+      "isTp": true,
+      "isHyper": false,
+      "isBrandPlus": false,
+      "isProcessingTag": true,
+      "isSmt": false,
+      "isImall": false,
+      "isFullOnline": false,
+      "isTuoguan": false,
+      "isYuantouFlagship": false
+    },
+    "featureBadge": null,
+    "companyName": "深圳市科轮福汽车用品有限公司",
+    "loginId": "科轮福汽车用品",
+    "userId": "2208766259761",
+    "videos": [],
+    "foundedYear": null,
+    "sellerType": "normal_factory",
+    "isOnline": true,
+    "fans": "1.5k",
+    "tpYear": 6,
+    "mainCategory": "汽车用品",
+    "address": "广东省深圳市龙华区广东深圳龙华区龙华街道富康社区旭日工业区航天科苑1栋",
+    "coordinates": "114.269953,22.736489",
+    "rank": null,
+    "certification": {
+      "type": null,
+      "number": null,
+      "reportUrl": null
+    },
+    "legalCompanyName": "深圳市科轮福汽车用品有限公司",
+    "originMerchant": null,
+    "shopUrl": "https://winport.m.1688.com/page/index.html?newRender=true&memberId=b2b-2208766259761e81f7&upstreamSource=share&__existtitle__=1",
+    "imUrl": "https://wangwang.m.1688.com/chat?siteid=cnalichn&clientid=科轮福汽车用品",
+    "factoryTags": [],
+    "stats": {
+      "repeatBuyers": null,
+      "crossBorderBuyers": null,
+      "brandPartner": null,
+      "repeatRate": null,
+      "positiveReviewRate": null,
+      "responseRate": null,
+      "factoryArea": null,
+      "employees": null,
+      "patents": null,
+      "mainDevices": null,
+      "scaleTier": null,
+      "certifications": null,
+      "ownBrand": null,
+      "rawCardDetail": [],
+      "totalOffers": 68
+    }
+  },
+  "sourceKeyword": "",
+  "specs": [
+    {
+      "name": "充电方式",
+      "value": "无线充电"
+    },
+    {
+      "name": "是否数显",
+      "value": "否"
+    },
+    {
+      "name": "输出接口",
+      "value": "TYPE-C"
+    },
+    {
+      "name": "类型",
+      "value": "磁吸式"
+    },
+    {
+      "name": "充电类型",
+      "value": "快速充电"
+    },
+    {
+      "name": "输出功率",
+      "value": "25"
+    },
+    {
+      "name": "最大输出功率",
+      "value": "25"
+    },
+    {
+      "name": "品牌",
+      "value": "中性"
+    },
+    {
+      "name": "加工定制",
+      "value": "是"
+    },
+    {
+      "name": "产品认证",
+      "value": "FCC"
+    },
+    {
+      "name": "货号",
+      "value": "t13"
+    },
+    {
+      "name": "型号",
+      "value": "K23【出风口磁吸支架*锌合金材质】,CK23-15W【车载无线充支架*锌合金磁吸头】,T13-25W【Qi2.2认证+七彩氛围灯+风冷】"
+    },
+    {
+      "name": "主要下游平台",
+      "value": "ebay,亚马逊,wish,速卖通,独立站,LAZADA"
+    },
+    {
+      "name": "主要销售地区",
+      "value": "非洲,欧洲,南美,东南亚,北美,东北亚,中东"
+    },
+    {
+      "name": "是否跨境出口专供货源",
+      "value": "是"
+    },
+    {
+      "name": "是否专利货源",
+      "value": "否"
+    },
+    {
+      "name": "接口数量",
+      "value": "1"
+    }
+  ],
+  "images": [
+    "https://cbu01.alicdn.com/img/ibank/O1CN015g4zCJ2Lyb91Ve4rm_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN017lxuQU2Lyb91VutpW_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01dwqZo52Lyb91ErWoy_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01be1Xfl2Lyb8ww24Pj_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01fTLZnT2Lyb91eC1p0_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01U7d3Mn2Lyb7htBUA4_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN010VCPA32Lyb91WBLTi_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN018UvAzS2Lyb91aO71w_!!2208766259761-0-cib.jpg"
+  ],
+  "videoUrl": "https://cloud.video.taobao.com/play/u/2208766259761/p/2/e/6/t/1/555045537113.mp4",
+  "dropship": {
+    "enabled": true,
+    "consignPrice": null,
+    "consignPriceTiers": [],
+    "channels": [],
+    "channelDetails": [],
+    "protections": [],
+    "downstreamPerformance": null,
+    "metrics": {
+      "orders30d": null,
+      "orders7d": null,
+      "pickupRate48h": null,
+      "pickupRate24h": null,
+      "distributorCount": null,
+      "downstreamStoreCount": null,
+      "publishDate": null
+    }
+  },
+  "shipping": {
+    "deliveryHours": 48,
+    "deliveryDays": 2,
+    "carrier": "中通快递",
+    "logisticsText": "常发中通快递",
+    "unitWeight": 0,
+    "location": "广东省深圳市",
+    "postFee": 0,
+    "isFreeShipping": true,
+    "freeShippingThreshold": null,
+    "protectionInfos": [],
+    "templateRemark": "平台指导运费",
+    "locationCode": "440311"
+  },
+  "categoryId": "1041759",
+  "topCategoryId": "122916002",
+  "categoryName": "车载手机充电器",
+  "categoryPath": "汽车用品 > 车载电器 > 车载手机充电器",
+  "unit": "套",
+  "saledCount": 11,
+  "saledCountStr": "10+",
+  "winportUrl": "https://winport.1688.com/page/index.html?memberId=b2b-2208766259761e81f7&_tabId_=index&upstreamSource=od&offerId=1059645864166",
+  "descriptionUrl": "https://air.1688.com/pages/od/app-desc/d7p56fw2w/index.html?url=https://itemcdn.tmall.com/1688offer/icoss80597517785cdcfd77e2160c5&offerId=1059645864166&sellerLoginId=科轮福汽车用品&prePromotionDateStr=2026年07月19日",
+  "isOutOfStock": false,
+  "isCrossBorderTrade": false,
+  "wantBuyCount": 68,
+  "recentSoldCount": 11,
+  "soldDisplay": "已售10+件",
+  "stock": 3000,
+  "minOrderQuantity": 2,
+  "supportsMix": true,
+  "mixWholesale": null,
+  "serviceLabels": [
+    "7天无理由退货",
+    "晚发必赔"
+  ],
+  "skuImages": [],
+  "promotions": [],
+  "productFlags": {
+    "isSkuOffer": true,
+    "isPreSell": false,
+    "isConsignMarket": true,
+    "isFreeSample": false,
+    "isBuyerProtection": true,
+    "isWeChatSupply": true,
+    "isCrossBorder": true,
+    "isOnePiece": true,
+    "isWholesale": false,
+    "isToTikTok": true,
+    "isToKuaiShou": true,
+    "isSupportMix": true,
+    "hasRelationOffer": false,
+    "isChtSingleOffer": false,
+    "isDetailForbidden": false,
+    "supportsCustomization": true
+  },
+  "unitWeight": 0,
+  "purchaseLimits": {
+    "personalLimit": null,
+    "promotionLimit": null
+  },
+  "supportsSampling": false,
+  "customization": {
+    "supported": true,
+    "title": "商品支持换包装,改规格等服务",
+    "shortTitle": "商品支持换包装等服务"
+  },
+  "title": "2026跨境新款磁吸车载手机支架Magsafe车载出风口无线充导航支架",
+  "price": {
+    "min": 14,
+    "max": 63,
+    "currency": "CNY"
+  },
+  "detailUrl": "https://detail.1688.com/offer/1059645864166.html",
+  "services": [
+    {
+      "name": "7天无理由退货",
+      "code": "qtwlybt",
+      "description": "满足相应条件下，卖家需支持7天无理由，其中定制订单不支持“7天无理由退货”。",
+      "linkUrl": null
+    },
+    {
+      "name": "晚发必赔",
+      "code": "ssbxsfh",
+      "description": "若商家未按订单约定的时间发货，您可以在订单详情申请赔付",
+      "linkUrl": "https://air.1688.com/app/ctf-page/protection-air/claim-rule.html"
+    }
+  ],
+  "coupons": [],
+  "descriptionImages": [
+    "https://cbu01.alicdn.com/img/ibank/O1CN01c1tESP2Lyb7jpPmmh_!!2208766259761-1-cib.gif",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01MQLh4o2Lyb7jMwvnU_!!2208766259761-1-cib.gif",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01pXlfVO2Lyb7igBh0V_!!2208766259761-1-cib.gif",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01GiXN8j2Lyb7jIKkNA_!!2208766259761-1-cib.gif",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01Ues92K2Lyb7jhGNUr_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01qFTIvK2Lyb91VSg14_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01Da2vtF2Lyb91VXRYt_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN017KOEuJ2Lyb91cnaou_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01cZCjom2Lyb91e6ecu_!!2208766259761-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01KKRJs02Lyb91Vec3q_!!2208766259761-0-cib.jpg"
+  ],
+  "descriptionText": null
+}
