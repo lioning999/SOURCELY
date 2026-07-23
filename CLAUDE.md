@@ -60,6 +60,7 @@
 - 改 Python 常量 → grep 所有 import 和使用点
 - 改 API 路由/响应格式 → grep 前端所有调用，确认前端同步
 - 改函数签名 → grep 所有调用方
+- **改判词逻辑 → 必须同步 `src/api/domain/verdict_engine.py` 和 `src/web/static/js/pages/report.js` 两处。改一处不改另一处 = bug（详见 `docs/技术-正式开发前风险清单.md` §判词双引擎同步）**
 
 **每次代码改动完成后，执行以下 6 项检查（不允许跳过）：**
 ```
@@ -69,6 +70,7 @@
 4. 新增/删除文件 → 确认注册/解注册
 5. config.py 改动 → 确认 .env.example 同步
 6. 对照 `docs/违宪自检速查表.md` 自检（越层/技术栈/安全/接口格式/报错暴露）
+7. 改判词规则 → grep 两端 hasCert/isAdvancedCert/isFactory/isTrader 确认一致
 ```
 
 ### 五、异步竞态防御
