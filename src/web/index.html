@@ -176,30 +176,7 @@
 
 <script src="static/js/components.js"></script>
 <script>renderNav('index'); renderFooter();</script>
-<script>
-// 搜索 → 提取 offerId 跳转 report.html
-function doSearch(input) {
-  var val = input.value.trim();
-  if (!val) return;
-  var m = val.match(/offer(?:Id)?[=/](\d+)/i);
-  if (m) {
-    window.location.href = 'report.html?offerId=' + m[1];
-  } else if (val.includes('detail.1688.com')) {
-    window.location.href = 'report.html?url=' + encodeURIComponent(val);
-  } else {
-    alert('请粘贴有效的 1688 商品链接\n示例：https://detail.1688.com/offer/xxxxx.html');
-  }
-}
-
-document.querySelectorAll('.search-wrap').forEach(function(wrap) {
-  var input = wrap.querySelector('input');
-  var btn = wrap.querySelector('button');
-  btn.addEventListener('click', function() { doSearch(input); });
-  input.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') doSearch(input);
-  });
-});
-</script>
+<script src="static/js/pages/index.js"></script>
 
 </body>
 </html>

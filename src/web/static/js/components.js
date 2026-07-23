@@ -57,6 +57,64 @@ function logout() {
 // Initialize auth on load
 initAuth();
 
+// ===== Toast 通知（全局可用） =====
+var Toast = (function () {
+  'use strict';
+
+  var CONTAINER_ID = 'toastContainer';
+  var DURATION = 4000;  // ms，错误类型延长到 6s
+
+  var ICONS = { error: '⚠️', success: '✅', warning: '⚠️', info: 'ℹ️' };
+
+  function ensureContainer() {
+    var el = document.getElementById(CONTAINER_ID);
+    if (!el) {
+      el = document.createElement('div');
+      el.id = CONTAINER_ID;
+      el.className = 'toast-container';
+      el.setAttribute('role', 'alert');
+      el.setAttribute('aria-live', 'polite');
+      document.body.appendChild(el);
+    }
+    return el;
+  }
+
+  function show(message, type) {
+    type = type || 'info';
+    var container = ensureContainer();
+    var toast = document.createElement('div');
+    toast.className = 'toast toast--' + type;
+    toast.innerHTML =
+      '<span class="toast-icon">' + (ICONS[type] || '') + '</span>' +
+      '<span class="toast-msg">' + String(message) + '</span>';
+
+    // 点击关闭
+    toast.style.cursor = 'pointer';
+    toast.addEventListener('click', function () { remove(toast); });
+
+    container.appendChild(toast);
+
+    var delay = type === 'error' ? 6000 : DURATION;
+    setTimeout(function () { remove(toast); }, delay);
+  }
+
+  function remove(toast) {
+    if (!toast || !toast.parentNode) return;
+    toast.style.animation = 'toastOut .25s ease forwards';
+    setTimeout(function () {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 260);
+  }
+
+  return {
+    show: show,
+    error:   function (msg) { show(msg, 'error'); },
+    success: function (msg) { show(msg, 'success'); },
+    warning: function (msg) { show(msg, 'warning'); },
+    info:    function (msg) { show(msg, 'info'); }
+  };
+})();
+
 // ===== Render =====
 
 function renderNav(active) {

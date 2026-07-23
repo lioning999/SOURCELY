@@ -132,26 +132,9 @@
         <span>工厂可合作 — SGS深度认证，6年源头旗舰，好评99.3%，同类热销TOP15</span>
       </div>
 
-      <div class="sec">基本信息</div>
-      <div class="row">
-        <span class="row-tag g">OK</span>
-        <div class="row-body">
-          <div class="row-label">公司名称</div>
-          <div class="row-value">义乌市雨灏贸易有限公司</div>
-          <div class="row-explain">政府注册全名，可在企业信用系统查询验证。</div>
-        </div>
-      </div>
-      <div class="row">
-        <span class="row-tag g">OK</span>
-        <div class="row-body">
-          <div class="row-label">地址</div>
-          <div class="row-value">浙江省金华市义乌市苏溪镇学苑小区4排25号</div>
-          <div class="row-explain">义乌 — 中国最大小商品集散地。源头产地，价格有优势。</div>
-        </div>
-      </div>
-
-      <div class="sec">店铺等级</div>
-      <div class="row">
+      <!-- 🔆 高亮区：一眼判断工厂靠不靠谱 -->
+      <div class="sec">核心评估</div>
+      <div class="row row-highlight" id="row-identity">
         <span class="row-tag g">OK</span>
         <div class="row-body">
           <div class="row-label">商家身份</div>
@@ -159,17 +142,7 @@
           <div class="row-explain" id="sellerExp">1688 官方认证的产业带源头工厂，比普通厂家多一道官方审核。</div>
         </div>
       </div>
-      <div class="row">
-        <span class="row-tag g">OK</span>
-        <div class="row-body">
-          <div class="row-label">工厂实力</div>
-          <div class="row-value" id="flagsValue"><span style="font-size:var(--fs-xs);color:var(--ink-3);">生产厂家（无第三方验厂认证）</span></div>
-          <div class="row-explain" id="flagsExplain">该店自称为工厂，但未获得 1688 实力工厂或超级工厂认证。</div>
-        </div>
-      </div>
-
-      <div class="sec">企业认证</div>
-      <div class="row" id="row-cert">
+      <div class="row row-highlight" id="row-cert">
         <span class="row-tag g">OK</span>
         <div class="row-body">
           <div class="row-label">认证类型</div>
@@ -185,13 +158,43 @@
         </div>
       </div>
 
-      <div class="sec">行业排名</div>
-      <div class="row">
+      <!-- 📊 次要区：辅助判断 -->
+      <div class="sec">辅助参考</div>
+      <div class="row" id="row-flags">
+        <span class="row-tag g">OK</span>
+        <div class="row-body">
+          <div class="row-label">工厂实力</div>
+          <div class="row-value" id="flagsValue"><span style="font-size:var(--fs-xs);color:var(--ink-3);">生产厂家（无第三方验厂认证）</span></div>
+          <div class="row-explain" id="flagsExplain">该店自称为工厂，但未获得 1688 实力工厂或超级工厂认证。</div>
+        </div>
+      </div>
+      <div class="row" id="row-rank">
         <span class="row-tag g">OK</span>
         <div class="row-body">
           <div class="row-label">品类排名</div>
           <div class="row-value"></div>
           <div class="row-explain"></div>
+        </div>
+      </div>
+
+      <!-- 📁 详情区：默认折叠，需要时展开 -->
+      <button class="detail-toggle" id="factoryDetailToggle">📋 查看公司信息 ▾</button>
+      <div class="detail-collapse" id="factoryDetail" style="display:none">
+        <div class="row" id="row-name">
+          <span class="row-tag g">OK</span>
+          <div class="row-body">
+            <div class="row-label">公司名称</div>
+            <div class="row-value">义乌市雨灏贸易有限公司</div>
+            <div class="row-explain">政府注册全名，可在企业信用系统查询验证。</div>
+          </div>
+        </div>
+        <div class="row" id="row-addr">
+          <span class="row-tag g">OK</span>
+          <div class="row-body">
+            <div class="row-label">地址</div>
+            <div class="row-value">浙江省金华市义乌市苏溪镇学苑小区4排25号</div>
+            <div class="row-explain">义乌 — 中国最大小商品集散地。源头产地，价格有优势。</div>
+          </div>
         </div>
       </div>
     </div>
@@ -282,6 +285,9 @@
 <script src="static/js/components.js"></script>
 <script>renderNav('report'); renderFooter();</script>
 <script src="static/js/i18n.js"></script>
+<script src="static/js/api/core.js"></script>
+<script src="static/js/verdict.js"></script>
+<script src="static/js/share.js"></script>
 <script src="static/js/pages/report.js"></script>
 </body>
 </html>

@@ -16,11 +16,7 @@ if (!user) {
 }
 
 function loadHistory() {
-  var token = getToken();
-  fetch('/api/history', {
-    headers: { 'Authorization': 'Bearer ' + token }
-  })
-    .then(function(r) { return r.json(); })
+  API.getHistory()
     .then(function(data) {
       if (data.code === 401) {
         loginPrompt.style.display = 'block';
