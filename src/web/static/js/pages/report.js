@@ -30,7 +30,18 @@
     API.analyze(url)
       .then(function (data) {
         if (data.code !== 200) {
-          showError(data.message || '分析启动失败');
+          // _handleCommonErrors 已统一弹 Toast（403配额/401未登录/5xx）
+          // 这里只更新页面状态，不重复弹 Toast
+          hideSkeleton();
+          resetSearchButton();
+          searchHint.textContent = data.message || '分析启动失败';
+          searchHint.style.color = 'var(--seal)';
+          // 清理 URL 参数，防止刷新页面重复触发分析
+          window.history.replaceState({}, document.title, window.location.pathname);
+          setTimeout(function () {
+            searchHint.textContent = '每日免费 3 次 · WhatsApp 登记后不限次数';
+            searchHint.style.color = '';
+          }, 5000);
           return;
         }
         var taskId = data.data.task_id;
@@ -38,6 +49,8 @@
         pollTask(taskId, 0);
       })
       .catch(function (err) {
+        // 清理 URL 参数，防止刷新页面重复触发分析
+        window.history.replaceState({}, document.title, window.location.pathname);
         showError('网络错误，请检查网络后重试');
         console.warn('Analyze start failed:', err);
       });
