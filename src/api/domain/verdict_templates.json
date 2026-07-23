@@ -1,45 +1,26 @@
 {
   "product": {
     "L1": {
-      "small_order_sales_return": "小单友好 · 销量验证 · 支持退货",
-      "small_order_return": "小单友好 · 支持退货"
-    },
-    "L2_parts": {
-      "hot_sale": "爆款热销",
-      "good_sales": "销量良好",
-      "low_moq": "低起订",
-      "mid_moq": "起订量适中",
-      "return_ok": "支持退货"
+      "recommend_sample": "✅ 推荐拿样 — 进价 ¥{price}、{moq}{unit}起批、月销 {sold}+，试错成本极低",
+      "consider": "✅ 可考虑 — 进价 ¥{price}、{moq}{unit}起批、有认证，建议拿样确认",
+      "no_cert": "⚠️ 缺认证 — 销量 {sold}+ 但无验厂认证，¥{deposit} 拿样就能确认品质",
+      "insufficient_data": "⚠️ 信息不足 — 缺销量和认证数据，¥{deposit} 拿 2 件确认最稳妥"
     },
     "L3": "产品数据正常，建议进一步了解"
   },
   "factory": {
     "L1": {
-      "trusted_old_shop": "高信誉老店 · 回头率高",
-      "super_factory": "超级工厂 · 1688 官方认证",
-      "high_praise_old_shop": "好评如潮 · 多年老店",
-      "agent_company": "贸易商，建议确认货源"
-    },
-    "L2_parts": {
-      "years_source_shop": "{years}年源头老店",
-      "years_old_shop": "{years}年老店",
-      "rate_pct": "好评率 {rate}%",
-      "repurchase_pct": "回头率 {rep}%",
-      "factory": "生产厂家",
-      "cht_member": "诚信通"
+      "reliable": "✅ 工厂可靠 — {years}年老店+{cert}验厂，合作风险低",
+      "cooperative": "✅ 可合作 — {years}年工厂+认证，建议拿样确认产能",
+      "self_claimed": "⚠️ 自称工厂未认证 — 无第三方验厂，先拿样验证，别信嘴上说的",
+      "trader": "⚠️ 非工厂 — 贸易商从第三方拿货，价差可能大，先拿样比对",
+      "insufficient": "⚠️ 数据不足 — 缺少经营信息，建议 WhatsApp 沟通后再决定"
     },
     "L3": "店铺数据正常，建议进一步沟通"
   },
   "sample": {
     "L1": {
-      "small_order_no_risk": "① 付定金 → ② 验货照片 → ③ 付尾款 → ④ 发货",
-      "free_sample": "支持免费拿样 · 零成本试水"
-    },
-    "L2_parts": {
-      "low_barrier_sample": "低门槛拿样",
-      "small_order_trial": "可小单试水",
-      "flash_delivery": "闪电发货",
-      "return_ok": "支持退货"
+      "two_payment": "① 付定金 → ② 验货照片 → ③ 付尾款 → ④ 发货"
     },
     "L3": "建议拿样确认质量后批量采购"
   }

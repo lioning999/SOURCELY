@@ -17,6 +17,9 @@ from routes.auth import auth_router, callback_router
 from routes.analyze import router as analyze_router
 from routes.history import router as history_router
 from utils.exceptions import AppError
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 # ---- 生命周期 ----
@@ -62,6 +65,16 @@ async def validation_error_handler(request: Request, exc: RequestValidationError
     return JSONResponse(
         status_code=422,
         content={"code": 422, "data": None, "message": "输入验证失败"},
+    )
+
+
+@app.exception_handler(Exception)
+async def catch_all_handler(request: Request, exc: Exception):
+    """兜底：非预期异常统一返回 {code, data, message}，不泄漏内部细节。"""
+    logger.exception(f"Unhandled exception: {request.url.path}")
+    return JSONResponse(
+        status_code=500,
+        content={"code": 500, "data": None, "message": "服务器内部错误，请稍后重试"},
     )
 
 

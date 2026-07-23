@@ -115,15 +115,16 @@ CORS（最外层，OPTIONS 放行）→ JWT（内层，Bearer token 校验）
 ```
 domain/
 ├── cache.py                # 内存缓存（TTL 30min，LRU 淘汰，上限 500 条）
-├── verdict_engine.py       # V1 规则引擎（L1+L2+L3 三层判词）
-├── verdict_templates.json  # 判词文案模板（新增品类改配置不动代码）
+├── product_mapper.py       # Apify 原始 JSON → 标准化数据映射（纯函数，字段级容错）
 ├── rate_limiter.py         # 滑动窗口全局限流（30 次/分钟）
-└── urls.py                 # 1688 URL 解析（extract_offer_id / is_valid_1688_url）
+├── urls.py                 # 1688 URL 解析（extract_offer_id / is_valid_1688_url）
+├── verdict_engine.py       # V1 规则引擎（L1+L2+L3 三层判词）
+└── verdict_templates.json  # 判词文案模板（新增品类改配置不动代码）
 ```
 
 ## 九、异常体系
 
-`utils/exceptions.py` — 10 种异常，全局处理器自动转换 `AppError` → `{code, data, message}`。
+`utils/exceptions.py` — 5 种异常，全局处理器自动转换 `AppError` → `{code, data, message}`。
 
 **services/ 层规则：** 只抛 AppError 子类，禁止 raise HTTPException / ValueError。
 
@@ -131,7 +132,6 @@ domain/
 |------|------|
 | 参数校验失败 | `ValidationError` |
 | 资源不存在 | `ResourceNotFoundError` |
-| DB 操作失败 | `DatabaseError` |
 | 外部服务挂了 | `ExternalServiceError` |
 | 配额不足 | `InsufficientQuotaError` |
 

@@ -29,9 +29,6 @@ class ApifyAdapter:
     """
 
     def __init__(self, token: str = ""):
-        self.token = token or Config.APIFY_TOKEN
-
-    def __init__(self, token: str = ""):
         self.token = token or Config.APIFY_TOKEN  # 默认 token，向后兼容
         self.tokens = Config.APIFY_TOKENS          # 多 token 列表
 

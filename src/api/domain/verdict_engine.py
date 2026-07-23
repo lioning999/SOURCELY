@@ -1,37 +1,21 @@
-"""V1 规则引擎 — 三层判词金字塔（L1 精确 + L2 区间 + L3 兜底）。
+"""V1.1 规则引擎 — 判词改直接建议，不给数据摘要。
 
-覆盖风险清单：
-  #4  判词覆盖率不足 → 三层金字塔 L1+L2+L3，目标 80%
-  #5  判词闪烁 → 滞回区间（Hysteresis）
-  #6  核心字段缺失 → 检查字段存在性，缺字段降级 L3
+判词文案从 verdict_templates.json 加载。
 
-判词文案从 verdict_templates.json 加载（风险 #14*：新增品类只需改配置，不动代码）。
+⚠️ 同步铁律：本文件的 judge_product() / judge_factory() 判断条件 + 关键数据
+   必须与 src/web/static/js/pages/report.js 的 buildProductVerdict() /
+   buildFactoryVerdict() 完全一致。改任何一处，必须同步改另一处。
+   验证方式：grep 两端 hasCert / isAdvanced / isFactory / isTrader 判断条件是否一致。
 """
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 # ---- 加载判词模板 ----
 _TEMPLATES_PATH = Path(__file__).parent / "verdict_templates.json"
 with open(_TEMPLATES_PATH, "r", encoding="utf-8") as _f:
     T = json.load(_f)
-
-# ---- 滞回区间配置 ----
-# 触发阈值 vs 回落阈值，防止阈值附近判词抖动
-HYSTERESIS: dict[str, tuple[float, float]] = {
-    "high_repurchase":  (0.70, 0.65),  # 触发 >70%, 回落 <65%
-    "high_rate":        (0.95, 0.90),  # 触发 >95%, 回落 <90%
-    "high_sales":       (5000, 3000),  # 触发 >5000, 回落 <3000
-}
-
-
-def _hysteresis_check(key: str, value: int | float) -> bool:
-    """滞回区间检查：用触发阈值判断（回落阈值用于后续查询）。"""
-    if key not in HYSTERESIS:
-        return False
-    trigger, _ = HYSTERESIS[key]
-    return value > trigger
 
 
 # ====================================================================
@@ -40,150 +24,75 @@ def _hysteresis_check(key: str, value: int | float) -> bool:
 
 
 def judge_product(data: dict[str, Any]) -> str:
-    """产品维度的判词。
+    """产品维度的判词（V1.1 改直接建议，不给数据摘要）。
 
-    依赖字段：moq, sold, return7day
+    依赖字段：certType, sold, return7day, priceCNY.low, moq, unit
+    注：前端 report.js 的 buildProductVerdict() 以相同逻辑覆盖此值。
     """
     L1 = T["product"]["L1"]
-    L2 = T["product"]["L2_parts"]
 
-    moq = data.get("moq")
-    sold = data.get("sold")
+    cert = data.get("certType")
+    sold = data.get("sold", 0)
     return_ok = data.get("return7day") == "OK"
+    price_cny_raw: Any = data.get("priceCNY") or {}
+    price_cny: dict[str, Any] = cast(dict[str, Any], price_cny_raw) if isinstance(price_cny_raw, dict) else {}  # type: ignore[reportUnnecessaryIsInstance]
+    price: Any = price_cny.get("low", 0)  # type: ignore[reportUnknownMemberType]
+    moq = data.get("moq", 2)
+    unit = data.get("unit", "件")
+    deposit = int(float(price) * int(moq) + 10)
 
-    # L1 精确匹配
-    if isinstance(moq, (int, float)) and isinstance(sold, (int, float)) and return_ok:
-        if moq <= 5 and sold >= 1000:
-            return L1["small_order_sales_return"]
+    has_cert = bool(cert and cert != "null")
+    sold_str = f"{sold/1000:.1f}k+" if sold >= 1000 else str(sold)
 
-    if isinstance(moq, (int, float)) and return_ok and moq <= 5:
-        return L1["small_order_return"]
-
-    # L2 区间匹配
-    parts: list[str] = []
-
-    if isinstance(sold, (int, float)):
-        if _hysteresis_check("high_sales", sold):
-            parts.append(L2["hot_sale"])
-        elif sold >= 1000:
-            parts.append(L2["good_sales"])
-
-    if isinstance(moq, (int, float)):
-        if moq <= 5:
-            parts.append(L2["low_moq"])
-        elif moq <= 20:
-            parts.append(L2["mid_moq"])
-
-    if return_ok:
-        parts.append(L2["return_ok"])
-
-    if parts:
-        return " · ".join(parts)
-
-    # L3 兜底
-    return T["product"]["L3"]
+    if has_cert and sold >= 1000 and return_ok:
+        return L1["recommend_sample"].format(price=price, moq=moq, unit=unit, sold=sold_str)
+    if has_cert and sold >= 100:
+        return L1["consider"].format(price=price, moq=moq, unit=unit, sold=sold_str)
+    if not has_cert and sold >= 500:
+        return L1["no_cert"].format(sold=sold_str, deposit=deposit)
+    return L1["insufficient_data"].format(deposit=deposit)
 
 
 def judge_factory(data: dict[str, Any]) -> str:
-    """工厂维度的判词。
+    """工厂维度的判词（V1.1 改直接建议）。
 
-    依赖字段：shop_years, shop_rate, repurchase, flags
+    依赖字段：shop_years, certType, sellerType, factoryFlags
+    注：前端 report.js 的 buildFactoryVerdict() 以相同逻辑覆盖此值。
     """
     L1 = T["factory"]["L1"]
-    L2 = T["factory"]["L2_parts"]
 
-    years = data.get("shop_years")
-    rate = data.get("shop_rate")
-    rep = data.get("repurchase")
-    flags: dict[str, Any] = data.get("flags", {}) or {}
+    years = data.get("shop_years", 0) or 0
+    cert = data.get("certType")
+    has_cert = bool(cert and cert != "null")
+    cert_name: str = str(cert).upper() if has_cert else ""
+    flags: str = str(data.get("factoryFlags", "")) if data.get("factoryFlags") else ""
 
-    # L1: trader detection（sellerTierLabel="贸易商" → 非工厂，不输出工厂推荐）
-    if data.get("sellerTierLabel") == "贸易商":
-        return T["factory"]["L1"].get("agent_company", "贸易商，建议确认货源")
+    # 高级认证
+    is_advanced = data.get("sellerType") in ("super_factory", "flagship") \
+        or any(kw in flags for kw in ("超级工厂", "源头旗舰", "实力工厂"))
+    # 生产厂家
+    is_factory = "非生产厂家" not in flags and \
+        ("生产厂家" in flags or data.get("sellerType") in ("normal_factory", "super_factory"))
+    # 贸易商
+    is_trader = "非生产厂家" in flags
 
-    # L1 精确匹配
-    if isinstance(years, (int, float)) and isinstance(rate, (int, float)) and isinstance(rep, (int, float)):
-        if years >= 5 and rate >= 95 and rep >= 70:
-            return L1["trusted_old_shop"]
-
-    if flags.get("isSuperFactory"):
-        return L1["super_factory"]
-
-    if isinstance(years, (int, float)) and isinstance(rate, (int, float)):
-        if years >= 3 and rate >= 98:
-            return L1["high_praise_old_shop"]
-
-    # L2 区间匹配
-    parts: list[str] = []
-
-    if isinstance(years, (int, float)):
-        if years >= 8:
-            parts.append(L2["years_source_shop"].format(years=years))
-        elif years >= 3:
-            parts.append(L2["years_old_shop"].format(years=years))
-
-    if isinstance(rate, (int, float)):
-        if _hysteresis_check("high_rate", rate):
-            parts.append(L2["rate_pct"].format(rate=rate))
-        elif rate >= 95:
-            parts.append(L2["rate_pct"].format(rate=rate))
-
-    if isinstance(rep, (int, float)):
-        if _hysteresis_check("high_repurchase", rep):
-            parts.append(L2["repurchase_pct"].format(rep=rep))
-
-    if flags.get("isFactory"):
-        parts.append(L2["factory"])
-    if flags.get("isChtMember"):
-        parts.append(L2["cht_member"])
-
-    if parts:
-        return " · ".join(parts)
-
-    # L3 兜底
-    return T["factory"]["L3"]
+    if is_advanced and years >= 3:
+        return L1["reliable"].format(years=years, cert=cert_name)
+    if is_factory and has_cert:
+        return L1["cooperative"].format(years=years)
+    if is_factory and not has_cert:
+        return L1["self_claimed"]
+    if is_trader:
+        return L1["trader"]
+    return L1["insufficient"]
 
 
 def judge_sample(data: dict[str, Any]) -> str:
-    """拿样维度的判词。
+    """拿样维度的判词 — 统一为两段付款流程。
 
-    依赖字段：moq, return7day, free_sample, delivery_days
+    依赖字段：无特殊要求，所有商品走同一流程。
     """
-    L1 = T["sample"]["L1"]
-    L2 = T["sample"]["L2_parts"]
-
-    moq = data.get("moq")
-    return_ok = data.get("return7day") == "OK"
-    free_sample = data.get("freeSample", False)
-    delivery = data.get("deliveryDays")
-
-    # L1
-    if isinstance(moq, (int, float)) and return_ok and moq <= 5:
-        return L1["small_order_no_risk"]
-
-    if free_sample:
-        return L1["free_sample"]
-
-    # L2
-    parts: list[str] = []
-
-    if isinstance(moq, (int, float)):
-        if moq <= 5:
-            parts.append(L2["low_barrier_sample"])
-        elif moq <= 20:
-            parts.append(L2["small_order_trial"])
-
-    if isinstance(delivery, (int, float)) and delivery <= 2:
-        parts.append(L2["flash_delivery"])
-
-    if return_ok:
-        parts.append(L2["return_ok"])
-
-    if parts:
-        return " · ".join(parts)
-
-    # L3
-    return T["sample"]["L3"]
+    return T["sample"]["L1"]["two_payment"]
 
 
 def judge_all(data: dict[str, Any]) -> dict[str, str]:

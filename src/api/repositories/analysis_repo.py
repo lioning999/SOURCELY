@@ -14,6 +14,16 @@ from utils.logger import get_logger
 logger = get_logger(__name__)
 
 
+# ---- INSERT 列名（create / upsert 共用） ----
+_INSERT_COLS = (
+    "user_id, offer_id, status, title, image_url, "
+    "price_min, price_max, moq, unit, "
+    "shop_name, shop_years, shop_rate, repurchase, sold, "
+    "verdict_product, verdict_factory, verdict_sample, apify_task_id"
+)
+_INSERT_VALS = "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+
+
 class AnalysisRepository:
     """analysis 表 + 子表 CRUD。事务由 service 层控制。"""
 
@@ -44,12 +54,7 @@ class AnalysisRepository:
             async with conn.cursor(aiomysql.DictCursor) as cur:
                 # 主表
                 await cur.execute(
-                    """INSERT INTO analysis
-                       (user_id, offer_id, status, title, image_url,
-                        price_min, price_max, moq, unit,
-                        shop_name, shop_years, shop_rate, repurchase, sold,
-                        verdict_product, verdict_factory, verdict_sample, apify_task_id)
-                       VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+                    f"INSERT INTO analysis ({_INSERT_COLS}) VALUES {_INSERT_VALS}",
                     (
                         data["user_id"], data["offer_id"], data.get("status", "done"),
                         data.get("title"), data.get("image_url"),
@@ -111,12 +116,7 @@ class AnalysisRepository:
             async with conn.cursor(aiomysql.DictCursor) as cur:
                 # 主表：INSERT ... ON DUPLICATE KEY UPDATE
                 await cur.execute(
-                    """INSERT INTO analysis
-                       (user_id, offer_id, status, title, image_url,
-                        price_min, price_max, moq, unit,
-                        shop_name, shop_years, shop_rate, repurchase, sold,
-                        verdict_product, verdict_factory, verdict_sample, apify_task_id)
-                       VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    f"""INSERT INTO analysis ({_INSERT_COLS}) VALUES {_INSERT_VALS}
                        ON DUPLICATE KEY UPDATE
                         status=VALUES(status), title=VALUES(title), image_url=VALUES(image_url),
                         price_min=VALUES(price_min), price_max=VALUES(price_max),
@@ -171,25 +171,6 @@ class AnalysisRepository:
         except Exception:
             await conn.rollback()
             raise
-        finally:
-            await AsyncDatabaseConnection.close_connection(conn)
-
-    async def get_by_offer_user(self, offer_id: str, user_id: int) -> dict[str, Any] | None:
-        """按 offer_id + user_id 查已完成的分析记录。"""
-        conn = await AsyncDatabaseConnection.get_connection()
-        try:
-            async with conn.cursor(aiomysql.DictCursor) as cur:
-                await cur.execute(
-                    """SELECT id, offer_id, status, title, price_min, price_max, moq, unit,
-                              shop_name, shop_years, shop_rate, repurchase, sold,
-                              verdict_product, verdict_factory, verdict_sample,
-                              created_at
-                       FROM analysis
-                       WHERE offer_id=%s AND user_id=%s AND status='done'
-                       ORDER BY created_at DESC LIMIT 1""",
-                    (offer_id, user_id),
-                )
-                return await cur.fetchone()
         finally:
             await AsyncDatabaseConnection.close_connection(conn)
 

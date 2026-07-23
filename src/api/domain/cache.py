@@ -35,6 +35,3 @@ def set(offer_id: str, data: dict[str, Any]) -> None:
     cache[offer_id] = (time.time(), data)
 
 
-def invalidate(offer_id: str) -> None:
-    """手动失效（强制刷新用，对应风险 #3 的「强制刷新」按钮）。"""
-    cache.pop(offer_id, None)

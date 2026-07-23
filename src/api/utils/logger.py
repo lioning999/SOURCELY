@@ -58,18 +58,3 @@ def get_logger(
     return logger
 
 
-def mask_sensitive(value: str, visible_chars: int = 4) -> str:
-    """脱敏处理。保留前N位，其余替换为***。
-
-    Args:
-        value: 原始值（如 openid、token）
-        visible_chars: 前面保留的字符数
-
-    Returns:
-        脱敏后的字符串
-    """
-    if not value:
-        return ""
-    if len(value) <= visible_chars:
-        return value[:visible_chars] + "***"
-    return value[:visible_chars] + "***"
