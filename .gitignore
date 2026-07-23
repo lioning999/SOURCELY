@@ -5,3 +5,6 @@ __pycache__/
 /tmp/
 *.log
 .claude/
+client_secret_*.json
+*.pyc
+*~

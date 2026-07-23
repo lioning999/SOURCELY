@@ -4,7 +4,7 @@ from typing import Awaitable, Callable
 from fastapi import Request
 from fastapi.responses import JSONResponse, Response
 from starlette.middleware.base import BaseHTTPMiddleware
-from utils.jwt import verify_access_token
+from utils.jwt import decode_token
 
 
 class JWTAuthMiddleware(BaseHTTPMiddleware):
@@ -17,15 +17,16 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
     - 认证失败 → 返回 401 JSON
     """
 
-    # TODO: 按项目实际路径修改
-    PROTECTED_PREFIXES = ["/api/", "/admin/"]
+    PROTECTED_PREFIXES = ["/api/"]
     EXEMPT_PATHS = [
-        "/api/auth/login",
-        "/api/auth/register",
-        "/api/analyze",
+        "/api/auth/google/login",
+        "/google-callback",
         "/docs",
         "/openapi.json",
         "/health",
+    ]
+    EXEMPT_PREFIXES = [
+        "/api/analyze",  # 搜索 API 整体豁免（未登录用户也可搜索）
     ]
 
     async def dispatch(
@@ -35,29 +36,38 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
     ):
         path = request.url.path
 
-        # 检查是否需要认证
+        # 提取 token（如有）
+        auth_header = request.headers.get("Authorization", "")
+        token = auth_header.removeprefix("Bearer ") if auth_header.startswith("Bearer ") else ""
+
         if self._needs_auth(path):
-            auth_header = request.headers.get("Authorization", "")
-            if not auth_header.startswith("Bearer "):
+            # 强制认证：无 token 或 token 无效 → 401
+            if not token:
                 return JSONResponse(
                     status_code=401,
                     content={"code": 401, "data": None, "message": "缺少认证信息"},
                 )
-
-            token = auth_header.removeprefix("Bearer ")
-            payload = verify_access_token(token)
-            if payload is None:
+            try:
+                payload = decode_token(token)
+            except Exception:
                 return JSONResponse(
                     status_code=401,
                     content={"code": 401, "data": None, "message": "token无效或已过期"},
                 )
-
-            # 注入用户身份
-            request.state.user_id = payload.get("sub")
+            request.state.user_id = payload.get("user_id")
+        elif token:
+            # 可选认证：有 token 就解，不强制；解失败不报错
+            try:
+                payload = decode_token(token)
+                request.state.user_id = payload.get("user_id")
+            except Exception:
+                pass
 
         return await call_next(request)
 
     def _needs_auth(self, path: str) -> bool:
         if path in self.EXEMPT_PATHS:
+            return False
+        if any(path.startswith(p) for p in self.EXEMPT_PREFIXES):
             return False
         return any(path.startswith(prefix) for prefix in self.PROTECTED_PREFIXES)

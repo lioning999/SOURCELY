@@ -1,0 +1,254 @@
+{
+  "offerId": "1029527530555",
+  "supplier": {
+    "memberId": "b2b-2219420220246f7f34",
+    "flags": {
+      "isChtMember": false,
+      "isIndustrySeller": false,
+      "isEaseBuyDealer": true,
+      "isFactoryDealer": false,
+      "isSuperFactory": false,
+      "isTpFactory": false,
+      "isShiliFactory": false,
+      "isSiliCertifiedBrand": false,
+      "isFactory": false,
+      "isTp": true,
+      "isHyper": false,
+      "isBrandPlus": false,
+      "isProcessingTag": false,
+      "isSmt": false,
+      "isImall": false,
+      "isFullOnline": false,
+      "isTuoguan": false,
+      "isYuantouFlagship": false
+    },
+    "featureBadge": null,
+    "companyName": "义乌市锂迪电子商务商行（个体工商户）",
+    "loginId": "丰富哒9999",
+    "userId": "2219420220246",
+    "videos": [],
+    "foundedYear": null,
+    "sellerType": "normal",
+    "isOnline": true,
+    "fans": "393",
+    "tpYear": 2,
+    "mainCategory": "玩具",
+    "address": null,
+    "coordinates": null,
+    "rank": null,
+    "certification": {
+      "type": null,
+      "number": null,
+      "reportUrl": null
+    },
+    "legalCompanyName": "义乌市锂迪电子商务商行",
+    "originMerchant": null,
+    "shopUrl": "https://winport.m.1688.com/page/index.html?newRender=true&memberId=b2b-2219420220246f7f34&upstreamSource=share&__existtitle__=1",
+    "imUrl": "https://wangwang.m.1688.com/chat?siteid=cnalichn&clientid=丰富哒9999",
+    "factoryTags": [],
+    "stats": {
+      "repeatBuyers": null,
+      "crossBorderBuyers": null,
+      "brandPartner": null,
+      "repeatRate": null,
+      "positiveReviewRate": null,
+      "responseRate": null,
+      "factoryArea": null,
+      "employees": null,
+      "patents": null,
+      "mainDevices": null,
+      "scaleTier": null,
+      "certifications": null,
+      "ownBrand": null,
+      "rawCardDetail": [],
+      "totalOffers": 68
+    }
+  },
+  "sourceKeyword": "",
+  "specs": [
+    {
+      "name": "材质",
+      "value": "陶瓷"
+    },
+    {
+      "name": "类别",
+      "value": "其它"
+    },
+    {
+      "name": "品牌",
+      "value": "其他"
+    },
+    {
+      "name": "风格",
+      "value": "现代简约风"
+    },
+    {
+      "name": "货号",
+      "value": "XF"
+    },
+    {
+      "name": "包装",
+      "value": "安全包装"
+    },
+    {
+      "name": "是否专利货源",
+      "value": "否"
+    },
+    {
+      "name": "尺寸",
+      "value": "转转马,转转马+礼盒"
+    },
+    {
+      "name": "是否跨境出口专供货源",
+      "value": "是"
+    },
+    {
+      "name": "是否属于礼品",
+      "value": "否"
+    }
+  ],
+  "images": [
+    "https://cbu01.alicdn.com/img/ibank/O1CN01H4IPLd1DgiYjORixM_!!2219420220246-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01vlQbUe1DgiYkvl4xn_!!2219420220246-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01VeBc1Q1DgiYeejlQ8_!!2219420220246-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01oCdVGI1DgiYjas6cQ_!!2219420220246-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01pZCqDw1DgiYjaO8q0_!!2219420220246-0-cib.jpg"
+  ],
+  "videoUrl": "https://cloud.video.taobao.com/play/u/2219420220246/p/2/e/6/t/1/556045455675.mp4",
+  "dropship": {
+    "enabled": true,
+    "consignPrice": null,
+    "consignPriceTiers": [],
+    "channels": [],
+    "channelDetails": [],
+    "protections": [],
+    "downstreamPerformance": null,
+    "metrics": {
+      "orders30d": null,
+      "orders7d": null,
+      "pickupRate48h": null,
+      "pickupRate24h": null,
+      "distributorCount": null,
+      "downstreamStoreCount": null,
+      "publishDate": null
+    }
+  },
+  "shipping": {
+    "deliveryHours": 48,
+    "deliveryDays": 2,
+    "carrier": "韵达快递",
+    "logisticsText": "承诺48小时发货·常发韵达快递",
+    "unitWeight": 0,
+    "location": "浙江金华",
+    "postFee": 3,
+    "isFreeShipping": false,
+    "freeShippingThreshold": null,
+    "protectionInfos": [
+      {
+        "name": "7天无理由退货",
+        "code": "qtwlybt",
+        "description": "7天无理由退货"
+      },
+      {
+        "name": "晚发必赔",
+        "code": "ssbxsfh",
+        "description": "晚发必赔"
+      }
+    ],
+    "templateRemark": null,
+    "locationCode": null
+  },
+  "categoryId": "1755",
+  "topCategoryId": "67",
+  "categoryName": null,
+  "categoryPath": null,
+  "unit": "件",
+  "saledCount": 5142,
+  "saledCountStr": "5100+",
+  "winportUrl": "https://winport.1688.com/page/index.html?memberId=b2b-2219420220246f7f34&_tabId_=index&upstreamSource=od&offerId=1029527530555",
+  "descriptionUrl": "https://air.1688.com/pages/od/app-desc/d7p56fw2w/index.html?url=https://itemcdn.tmall.com/1688offer/icoss3210313205e2c8da6741fea1ac&offerId=1029527530555&sellerLoginId=丰富哒9999",
+  "isOutOfStock": false,
+  "isCrossBorderTrade": false,
+  "wantBuyCount": 3436,
+  "recentSoldCount": 5142,
+  "soldDisplay": "已售5100+件",
+  "stock": 13942,
+  "minOrderQuantity": 1,
+  "supportsMix": false,
+  "mixWholesale": null,
+  "serviceLabels": [
+    "7天无理由退货",
+    "晚发必赔"
+  ],
+  "skuImages": [
+    {
+      "name": "转转马",
+      "imgUrl": "https://cbu01.alicdn.com/img/ibank/O1CN01TatxFZ1DgiYjghTmv_!!2219420220246-0-cib.jpg"
+    },
+    {
+      "name": "转转马+礼盒",
+      "imgUrl": "https://cbu01.alicdn.com/img/ibank/O1CN01HOfVjc1DgiYkwNPWl_!!2219420220246-0-cib.jpg"
+    }
+  ],
+  "promotions": [],
+  "productFlags": {
+    "isSkuOffer": true,
+    "isPreSell": false,
+    "isConsignMarket": true,
+    "isFreeSample": true,
+    "isBuyerProtection": true,
+    "isWeChatSupply": true,
+    "isCrossBorder": false,
+    "isOnePiece": true,
+    "isWholesale": true,
+    "isToTikTok": true,
+    "isToKuaiShou": true,
+    "isSupportMix": false,
+    "hasRelationOffer": false,
+    "isChtSingleOffer": false,
+    "isDetailForbidden": false,
+    "supportsCustomization": false
+  },
+  "unitWeight": null,
+  "purchaseLimits": {
+    "personalLimit": null,
+    "promotionLimit": null
+  },
+  "supportsSampling": false,
+  "customization": {
+    "supported": false,
+    "title": null,
+    "shortTitle": null
+  },
+  "title": "景德镇陶瓷转转小马旋转马有钱小摆件网红桌面装饰马年新年礼物",
+  "price": {
+    "min": 4.5,
+    "max": 4.5,
+    "currency": "CNY"
+  },
+  "detailUrl": "https://detail.1688.com/offer/1029527530555.html",
+  "services": [
+    {
+      "name": "7天无理由退货",
+      "code": "qtwlybt",
+      "description": "满足相应条件下，卖家需支持7天无理由，其中定制订单不支持“7天无理由退货”。",
+      "linkUrl": null
+    },
+    {
+      "name": "晚发必赔",
+      "code": "ssbxsfh",
+      "description": "若商家未按订单约定的时间发货，您可以在订单详情申请赔付",
+      "linkUrl": "https://air.1688.com/app/ctf-page/protection-air/claim-rule.html"
+    }
+  ],
+  "coupons": [],
+  "descriptionImages": [
+    "https://cbu01.alicdn.com/img/ibank/O1CN011bvqSf1DgiYjtsWAR_!!2219420220246-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01tOX2nd1DgiYjzv64v_!!2219420220246-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01TatxFZ1DgiYjghTmv_!!2219420220246-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01jFjZ5k1DgiYjtsieY_!!2219420220246-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01NtZN0B1DgiYjyhG9f_!!2219420220246-0-cib.jpg",
+    "https://cbu01.alicdn.com/img/ibank/O1CN01aKonMb1DgiYjOPApc_!!2219420220246-0-cib.jpg"
+  ],
+  "descriptionText": null
+}

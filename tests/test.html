@@ -140,10 +140,9 @@ body {
 
 .main-img-wrap { flex: 1; min-width: 0; margin-left: 4px; }
 .prod-img {
-  width: 96%; aspect-ratio: 1/1; max-height: 320px;
-  border-radius: 12px; object-fit: contain; background: #FFF;
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08); display: block;
+  width: 100%; aspect-ratio: 1/1; max-height: 320px;
+  border-radius: 12px; object-fit: cover; background: #FFF;
+  border: 1px solid var(--line);
 }
 
 /* ===== Product Header ===== */
@@ -155,6 +154,8 @@ body {
 }
 .prod-price { font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: var(--seal); margin-top: var(--s2); }
 .prod-price em { font-size: var(--fs-sm); font-weight: 400; color: var(--ink-3); font-style: normal; font-family: var(--font-body); }
+.price-link { font-size: var(--fs-xs); font-weight: 400; color: var(--ink-3); text-decoration: none; border-bottom: 1px dotted var(--ink-3); margin-left: 6px; font-family: var(--font-body); white-space: nowrap; }
+.price-link:hover { color: var(--brand); border-color: var(--brand); }
 
 /* quick info — one row */
 .quick-info { margin-top: var(--s3); font-size: var(--fs); color: var(--ink-2); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
@@ -337,6 +338,60 @@ body {
   margin-top: var(--s5); font-weight: 500; line-height: 1.55;
 }
 
+/* ===== Share Button ===== */
+.share-btn-wrap { margin-top: var(--s4); }
+.share-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px; width: 100%; justify-content: center;
+  border: 1px solid var(--line); border-radius: 20px;
+  background: var(--paper-2); color: var(--ink-2);
+  font-size: var(--fs); font-weight: 600; cursor: pointer;
+  font-family: var(--font-body); letter-spacing: .3px;
+  transition: all .18s;
+}
+.share-btn:hover { border-color: var(--gold); color: var(--gold); }
+.share-btn-icon { font-size: 15px; }
+
+/* ===== Share Overlay & Sheet ===== */
+.share-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,.45); backdrop-filter: blur(3px);
+  align-items: flex-end; justify-content: center;
+}
+.share-overlay.show { display: flex; }
+.share-sheet {
+  position: relative;
+  background: var(--paper-2); border-radius: 18px 18px 0 0;
+  width: 100%; max-width: 500px; padding: var(--s6) var(--s5) var(--s8);
+  animation: sheetUp .25s ease;
+  max-height: 90vh; overflow-y: auto;
+}
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.share-sheet-title {
+  font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700;
+  color: var(--ink); margin-bottom: var(--s4); text-align: center;
+}
+.share-preview-img {
+  width: 100%; border-radius: 10px; border: 1px solid var(--line);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08); margin-bottom: var(--s5);
+  display: block;
+}
+.share-sheet-actions { display: flex; gap: var(--s3); }
+.share-sheet-btn {
+  flex: 1; padding: 14px; border-radius: var(--r); font-size: var(--fs-md);
+  font-weight: 700; cursor: pointer; font-family: var(--font-body);
+  text-align: center; border: none; letter-spacing: .3px; transition: all .15s;
+}
+.share-sheet-btn.save { background: var(--paper); color: var(--ink); border: 1px solid var(--line); }
+.share-sheet-btn.share { background: var(--brand-deep); color: #FFF; }
+.share-sheet-btn.save:hover { border-color: var(--brand); }
+.share-sheet-btn.share:hover { background: var(--brand); }
+.share-sheet-close {
+  position: absolute; top: 12px; right: 16px;
+  background: none; border: none; font-size: 24px; cursor: pointer;
+  color: var(--ink-3); padding: 4px; line-height: 1;
+}
+
 /* ===== Responsive ===== */
 @media (min-width: 500px) {
   .view { max-width: 500px; }
@@ -346,6 +401,7 @@ body {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
 </style>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -408,7 +464,7 @@ body {
     <h2 class="prod-title" title="卡通可爱手编织小蒲扇子女夏天新款便携随身手摇扇照道具扇子批发">卡通可爱手编织小蒲扇子女夏天新款便携随身手摇扇照道具扇子批发</h2>
 
     <!-- 价格 (price.min–max 合并) -->
-    <p class="prod-price">¥7.5 – ¥7.8 <em>/ 把</em></p>
+    <p class="prod-price">¥7.5 – ¥7.8 <em>/ 把</em> <a href="https://detail.1688.com/offer/1038913113865.html" target="_blank" class="price-link">1688 原页 →</a></p>
 
     <!-- 起批量 + 销量（拆两行） -->
     <div class="quick-info">
@@ -432,9 +488,11 @@ body {
     </div>
 
     
-    <!-- 操作按钮 -->
-    <div class="act-row">
-      <a href="https://detail.1688.com/offer/1038913113865.html" target="_blank" class="act-link secondary">🔗 查看 1688 原页面</a>
+    <!-- 分享按钮 — 主按钮 -->
+    <div class="share-btn-wrap">
+      <button class="share-btn" id="shareBtnMain" aria-label="分享决策卡">
+        <span class="share-btn-icon">📤</span> 分享决策卡
+      </button>
     </div>
 
     <p class="warn">该供应商不直发海外个人买家。我们帮你完成 1688 下单、国内收货、验货、国际发货全流程。</p>
@@ -631,6 +689,13 @@ body {
         <p class="steps-detail-note">⚠ 发现质量问题 → 通知你 → 你决定退款或换货 → 我们执行。服务费不退，但会全力帮你协调。</p>
       </div>
 
+      <!-- 分享按钮 — 辅按钮 -->
+      <div class="share-btn-wrap">
+        <button class="share-btn" id="shareBtnSec" aria-label="分享决策卡">
+          <span class="share-btn-icon">📤</span> 分享决策卡
+        </button>
+      </div>
+
       <!-- CTA -->
       <a href="https://wa.me/8613800000000" target="_blank" class="btn" style="text-decoration:none;display:block;margin-top:var(--s5);">📞 WhatsApp 咨询下单</a>
       <p class="btn-sub">我们去 1688 下单 → 收货验货拍照 → 你确认 → 付尾款 → 国际发货到你门口</p>
@@ -639,6 +704,23 @@ body {
     </div><!-- /拿样 Tab -->
 
   </section>
+
+  <!-- Share Overlay -->
+  <div class="share-overlay" id="shareOverlay">
+    <div class="share-sheet">
+      <button class="share-sheet-close" id="shareClose" aria-label="关闭">×</button>
+      <div class="share-sheet-title">分享决策卡</div>
+      <img class="share-preview-img" id="sharePreviewImg" alt="决策卡预览">
+      <div class="share-sheet-actions">
+        <button class="share-sheet-btn save" id="shareSave">💾 保存图片</button>
+        <button class="share-sheet-btn share" id="shareSend">📱 分享到应用</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden share card DOM for rendering -->
+  <div id="shareCardTmpl" style="position:fixed;left:-9999px;top:0;width:750px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif;color:#232A38;line-height:1.5;"></div>
+
 </main>
 
 <script>
@@ -757,6 +839,144 @@ document.querySelectorAll('.tab').forEach(function(tab) {
 
 // ===== 初始计算 =====
 updateCost();
+
+// ===== 分享功能 =====
+var shareOverlay = document.getElementById('shareOverlay');
+var sharePreviewImg = document.getElementById('sharePreviewImg');
+var shareCardTmpl = document.getElementById('shareCardTmpl');
+var shareBlob = null;
+var shareFile = null;
+
+/** 构建分享卡隐藏 DOM，返回 html2canvas 可渲染的 element */
+function buildShareCard() {
+  var mainImgSrc = document.getElementById('mainImg').src;
+  var title = document.querySelector('.prod-title').textContent.trim();
+  var priceText = document.querySelector('.prod-price').textContent.trim();
+  var moqText = document.querySelector('.quick-info').textContent.trim().replace(/\s+/g, ' ');
+  var badges = document.querySelector('.badge-row').innerHTML;
+  var trustHTML = document.querySelector('.trust-bar').innerHTML;
+
+  var html = '<div style="padding:32px 28px 0;background:#FFFFFF;">';
+
+  // Logo
+  html += '<div style="margin-bottom:24px;">';
+  html += '<div style="font-family:\'Noto Serif SC\',\'Songti SC\',serif;font-weight:700;font-size:22px;color:#232A38;letter-spacing:1px;">源采 SOURCELY</div>';
+  html += '</div>';
+
+  // 主图
+  html += '<div style="width:694px;height:694px;border-radius:12px;overflow:hidden;background:#FAFAFA;margin-bottom:24px;">';
+  html += '<img src="' + mainImgSrc + '" style="width:100%;height:100%;object-fit:cover;display:block;" crossorigin="anonymous">';
+  html += '</div>';
+
+  // 标题
+  html += '<div style="font-family:\'Noto Serif SC\',\'Songti SC\',serif;font-weight:700;font-size:22px;color:#232A38;line-height:1.4;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">' + escapeHTML(title) + '</div>';
+
+  // 价格
+  html += '<div style="font-family:\'JetBrains Mono\',\'SF Mono\',Menlo,monospace;font-size:30px;font-weight:700;color:#D6432F;margin-bottom:12px;">' + priceText + '</div>';
+
+  // MOQ + 销量
+  html += '<div style="font-size:17px;color:#5B6373;margin-bottom:16px;">' + moqText + '</div>';
+
+  // 标签行
+  html += '<div style="margin-bottom:16px;">' + badges + '</div>';
+
+  // 信任条
+  html += '<div style="padding:10px 18px;background:#F8F7F3;border-left:4px solid #2F8A5B;border-radius:0 6px 6px 0;font-size:16px;font-weight:600;color:#232A38;display:flex;flex-wrap:wrap;gap:8px 20px;margin-bottom:24px;">' + trustHTML + '</div>';
+
+  // 品牌条
+  html += '<div style="background:#1E3A5F;margin:0 -28px;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;">';
+  html += '<div>';
+  html += '<div style="font-weight:700;font-size:17px;color:#FFFFFF;letter-spacing:2px;">🔍 SOURCELY</div>';
+  html += '<div style="font-size:13px;color:rgba(255,255,255,.75);margin-top:4px;">30秒看懂1688工厂</div>';
+  html += '</div>';
+  html += '<div style="font-size:14px;color:rgba(255,255,255,.6);font-family:\'JetBrains Mono\',\'SF Mono\',monospace;">sourcely.com</div>';
+  html += '</div>';
+
+  html += '</div>';
+
+  shareCardTmpl.innerHTML = html;
+  return shareCardTmpl.firstElementChild;
+}
+
+function escapeHTML(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/** 渲染分享图 + 显示预览 Sheet */
+function renderAndShow() {
+  var card = buildShareCard();
+  // 强制浏览器布局
+  card.offsetHeight;
+
+  html2canvas(card, {
+    scale: 2,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: '#FFFFFF'
+  }).then(function(canvas) {
+    // 转 blob
+    canvas.toBlob(function(blob) {
+      shareBlob = blob;
+      shareFile = new File([blob], 'sourcely-decision-card.png', { type: 'image/png' });
+      sharePreviewImg.src = URL.createObjectURL(blob);
+      shareOverlay.classList.add('show');
+    }, 'image/png', 0.85);
+  }).catch(function(err) {
+    console.warn('html2canvas render error:', err);
+    alert('图片生成失败，请重试。如持续失败请截图分享。');
+  });
+}
+
+/** 关闭 Sheet */
+function closeSheet() {
+  shareOverlay.classList.remove('show');
+  shareCardTmpl.innerHTML = '';
+}
+
+/** 保存图片 */
+function saveImage() {
+  if (!shareBlob) return;
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(shareBlob);
+  a.download = 'sourcely-decision-card.png';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+/** 系统分享 */
+function shareToApp() {
+  if (!shareFile) return;
+  if (navigator.share && navigator.canShare && navigator.canShare({ files: [shareFile] })) {
+    navigator.share({
+      files: [shareFile],
+      title: 'Sourcely 产品决策卡',
+      url: 'https://sourcely.com'
+    }).catch(function(err) {
+      if (err.name !== 'AbortError') {
+        console.warn('Share failed:', err);
+        saveImage(); // 降级为保存
+      }
+    });
+  } else {
+    // 不支持文件分享 → 降级为保存
+    saveImage();
+  }
+}
+
+// 绑定事件
+document.getElementById('shareBtnMain').addEventListener('click', renderAndShow);
+document.getElementById('shareBtnSec').addEventListener('click', renderAndShow);
+document.getElementById('shareClose').addEventListener('click', closeSheet);
+document.getElementById('shareSave').addEventListener('click', saveImage);
+document.getElementById('shareSend').addEventListener('click', shareToApp);
+
+// 点击遮罩关闭
+shareOverlay.addEventListener('click', function(e) {
+  if (e.target === shareOverlay) closeSheet();
+});
 </script>
 
 </body>

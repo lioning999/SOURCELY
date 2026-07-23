@@ -1,20 +1,31 @@
-"""1688 商品分析 API — 接收 1688 链接，返回分析数据。"""
+"""1688 商品分析 API — 异步轮询模式。
 
-import re
+覆盖风险清单：
+  #9  用户输入非 1688 链接 → 前后端双重校验
+  #10  异步轮询 → POST 启任务 + GET 轮询状态
+  #11  用户猛点按钮 → 前端 disabled + 后端请求合并
+  #14  L1 前端按钮防重（后端配合：同 offer_id 未完成任务返回已有 task_id）
+"""
+
 import time
+from typing import Any
+
 from fastapi import APIRouter, Request
 from pydantic import BaseModel, field_validator
+
 from config import Config
-from services.analyze_service import analyze_service
-from utils.exceptions import ValidationError, InsufficientQuotaError
+from domain import rate_limiter
+from domain.urls import extract_offer_id, is_valid_1688_url
+from services.analyze_svc import analyze_service
+from utils.exceptions import ValidationError, InsufficientQuotaError, ResourceNotFoundError
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
 router = APIRouter()
 
-# 简单内存计数器（按 IP）
-_daily_counter: dict[str, tuple[int, float]] = {}  # {ip: (count, first_request_ts)}
+# 简单内存计数器（按 IP，V1 未登录用户限制）
+_daily_counter: dict[str, tuple[int, float]] = {}
 
 
 class AnalyzeRequest(BaseModel):
@@ -23,68 +34,137 @@ class AnalyzeRequest(BaseModel):
     @field_validator("url")
     @classmethod
     def must_be_1688_detail(cls, v: str) -> str:
-        if not re.search(r"1688\.com/offer/\d{8,}", v):
+        """风险 #9：前后端双重校验 1688 链接格式。"""
+        if not is_valid_1688_url(v):
             raise ValueError("请输入有效的 1688 商品链接（detail.1688.com/offer/...）")
         return v.strip()
 
 
+# ====================================================================
+# POST /api/analyze — 启动分析（异步轮询模式，风险 #10）
+# ====================================================================
+
 @router.post("/api/analyze")
-async def analyze_product(body: AnalyzeRequest, request: Request):
-    """分析 1688 商品。
+async def analyze_start(body: AnalyzeRequest, request: Request) -> dict[str, Any]:
+    """启动 1688 商品分析，立即返回 task_id。
 
-    流程：
-    1. 提取 offerId
-    2. 检查每日配额（Demo: 每 IP 3 次/天）
-    3. 调 Apify 抓取并映射
-    4. 返回标准化数据
+    前端收到 task_id 后每 2 秒轮询 GET /api/analyze/{task_id}。
     """
-    # ---- 0. 提取 offerId ----
-    offer_id_match = re.search(r"offer/(\d+)", body.url)
-    offer_id = offer_id_match.group(1) if offer_id_match else None
+    # ---- 1. 提取 offerId ----
+    offer_id = extract_offer_id(body.url)
+    if not offer_id or not offer_id.isdigit():
+        raise ValidationError(message="无法从链接中提取有效的商品 ID")
+    if len(offer_id) < 8:
+        raise ValidationError(message="商品 ID 格式不正确")
 
-    # ---- 1. 每日配额检查 ----
-    ip = request.client.host if request.client else "unknown"
-    if not _check_quota(ip):
+    # ---- 2. 全局限流（风险 #14 L3） ----
+    if not rate_limiter.check():
+        logger.warning(f"Global rate limit hit from IP={request.client.host if request.client else '?'}")
         raise InsufficientQuotaError(
-            resource_type="今日免费分析次数",
-            details={
-                "daily_limit": Config.APIFY_DAILY_FREE_LIMIT,
-                "whatsapp": "+86 138-xxxx-xxxx",
-            },
+            resource_type="系统繁忙",
+            details={"retry_after": "60秒"},
         )
 
-    # ---- 2. 调用分析服务 ----
-    t0 = time.time()
-    try:
-        data = await analyze_service.analyze(body.url)
-    except Exception:
-        logger.exception(f"Analyze failed for {body.url}")
-        raise
+    # ---- 3. 未登录用户每日配额 ----
+    user_id = getattr(request.state, "user_id", 0) or 0
+    if not user_id:
+        ip = request.client.host if request.client else "unknown"
+        if not _check_quota(ip):
+            raise InsufficientQuotaError(
+                resource_type="今日免费分析次数",
+                details={"daily_limit": Config.APIFY_DAILY_FREE_LIMIT, "tip": "登录后可获得更多次数"},
+            )
 
-    elapsed = time.time() - t0
-    logger.info(f"Analyzed {offer_id} in {elapsed:.1f}s")
+    # ---- 4. 启动后台分析 ----
+    task_id = await analyze_service.start(offer_id=offer_id, user_id=user_id, raw_url=body.url)
+    logger.info(f"Analysis started: offer_id={offer_id} task_id={task_id} user_id={user_id}")
 
     return {
         "code": 200,
-        "data": data,
+        "data": {"task_id": task_id, "status": "pending"},
         "message": "ok",
-        "meta": {"offerId": offer_id, "elapsed": f"{elapsed:.1f}s"},
     }
 
 
+# ====================================================================
+# GET /api/analyze/{task_id} — 轮询状态（风险 #10）
+# ====================================================================
+
+@router.get("/api/analyze/{task_id}")
+async def analyze_status(task_id: str) -> dict[str, Any]:
+    """查询分析任务状态。
+
+    返回:
+      - status=pending/running → 前端继续轮询
+      - status=done → result 包含完整分析数据
+      - status=failed → error 包含错误信息
+    """
+    task = analyze_service.get_task(task_id)
+    if task is None:
+        raise ResourceNotFoundError(resource_type="任务", resource_id=task_id)
+
+    return {
+        "code": 200,
+        "data": task,
+        "message": "ok",
+    }
+
+
+# ====================================================================
+# POST /api/save-report — 手动保存分析报告（需登录）
+# ====================================================================
+
+class SaveReportRequest(BaseModel):
+    offer_id: str
+
+    @field_validator("offer_id")
+    @classmethod
+    def must_be_valid(cls, v: str) -> str:
+        if not v.isdigit() or len(v) < 8:
+            raise ValueError("无效的 offer_id")
+        return v.strip()
+
+
+@router.post("/api/save-report")
+async def save_report(body: SaveReportRequest, request: Request) -> dict[str, Any]:
+    """用户手动保存分析报告到数据库。
+
+    从中端缓存取数据，不需要重新调 Apify。
+    需 JWT 认证（/api/ 前缀自动拦截）。
+    """
+    user_id: int = getattr(request.state, "user_id", 0) or 0
+    if not user_id:
+        return {"code": 401, "data": None, "message": "请先登录"}
+
+    result = await analyze_service.save_report(user_id=user_id, offer_id=body.offer_id)
+    if result is None:
+        # 缓存已过期
+        return {
+            "code": 410,
+            "data": None,
+            "message": "分析已过期，请重新搜索该商品",
+        }
+
+    logger.info(f"Report saved: offer_id={body.offer_id} user_id={user_id}")
+    return {
+        "code": 200,
+        "data": {"saved": True},
+        "message": "已保存到我的分析",
+    }
+
+
+# ====================================================================
+# 配额工具
+# ====================================================================
+
 def _check_quota(ip: str) -> bool:
-    """检查 IP 是否在每日配额内。超过限制返回 False。"""
     now = time.time()
     entry = _daily_counter.get(ip)
-
-    # 无记录或已过 24h → 重置
     if entry is None or (now - entry[1]) > 86400:
         _daily_counter[ip] = (1, now)
         return True
-
     count, first_ts = entry
     if count >= Config.APIFY_DAILY_FREE_LIMIT:
         return False
-
     _daily_counter[ip] = (count + 1, first_ts)
     return True
