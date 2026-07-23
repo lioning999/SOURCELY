@@ -66,7 +66,7 @@ class AnalyzeService:
 
         task_id = str(uuid.uuid4())[:8]
         _tasks[task_id] = {"status": "pending", "result": None, "created_at": time.time()}
-        _pending[offer_id] = asyncio.create_task(self._run(task_id, offer_id, user_id, raw_url))
+        _pending[offer_id] = asyncio.create_task(self._run(task_id, offer_id, raw_url))
         return task_id
 
     def get_task(self, task_id: str) -> dict[str, Any] | None:
@@ -97,8 +97,8 @@ class AnalyzeService:
     # 后台分析流水线
     # ------------------------------------------------------------------
 
-    async def _run(self, task_id: str, offer_id: str, user_id: int, raw_url: str) -> dict[str, Any]:
-        """完整分析流水线（在后天 asyncio.Task 中执行）。"""
+    async def _run(self, task_id: str, offer_id: str, raw_url: str) -> dict[str, Any]:
+        """完整分析流水线（在后台 asyncio.Task 中执行）。"""
         try:
             _tasks[task_id]["status"] = "running"
 
@@ -106,9 +106,6 @@ class AnalyzeService:
             cached = analysis_cache.get(offer_id)
             if cached:
                 logger.info(f"Cache hit: offer_id={offer_id}")
-                # 异步写入 DB（不阻塞返回）
-                if user_id:
-                    asyncio.create_task(self._save_to_db(cached, user_id, offer_id))
                 _tasks[task_id] = {"status": "done", "result": cached, "created_at": time.time()}
                 return cached
 
@@ -174,10 +171,6 @@ class AnalyzeService:
             # ---- 5. 写缓存（风险 #1 #14 L2） ----
             analysis_cache.set(offer_id, mapped)
 
-            # ---- 6. 异步入库（风险 #12） ----
-            if user_id:
-                asyncio.create_task(self._save_to_db(mapped, user_id, offer_id))
-
             _tasks[task_id] = {"status": "done", "result": mapped, "created_at": time.time()}
             logger.info(f"Analysis done: offer_id={offer_id} task={task_id}")
             return mapped
@@ -191,19 +184,12 @@ class AnalyzeService:
         finally:
             _pending.pop(offer_id, None)
 
-    async def _save_to_db(self, mapped: dict[str, Any], user_id: int, offer_id: str) -> None:
-        """异步写入 analysis 表（不阻塞主流程）。"""
-        try:
-            await self.repo.create(self._db_data(mapped, user_id, offer_id))
-        except Exception:
-            logger.exception(f"DB save failed for offer_id={offer_id}")
-
     async def _save_to_db_upsert(self, mapped: dict[str, Any], user_id: int, offer_id: str) -> None:
         """同步写入 analysis 表（用户手动保存，跑 upsert 不报重复键错误）。"""
         await self.repo.upsert(self._db_data(mapped, user_id, offer_id))
 
     def _db_data(self, mapped: dict[str, Any], user_id: int, offer_id: str) -> dict[str, Any]:
-        """提取 DB 写入所需字段（_save_to_db 和 _save_to_db_upsert 共用）。"""
+        """提取 DB 写入所需字段（供 _save_to_db_upsert 使用）。"""
         return {
             "user_id": user_id,
             "offer_id": offer_id,
